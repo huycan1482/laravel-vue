@@ -158,23 +158,30 @@ export default {
 
     .menu-sub {
         max-height: 0;
-        transition: all .5s;
+        transition: .5s;
+            // transition: 1s;
+
+        overflow: hidden;
+        // animation: slideUp 1s infinite;
+
         &.show {
-            transition: all 1s;
+            transition: 1s;
             max-height: 100vh;
+            // transform: translateY(-100%);
+            // animation: slideDown 1s infinite;
         }
     }
 
-    // .slide-enter-active,
-    // .slide-leave-active {
-    //     transition: 0.5s;
-    // }
+    .slide-enter-active,
+    .slide-leave-active {
+        transition: 0.5s;
+    }
 
-    // .slide-enter-from,
-    // .slide-leave-to {
-    //     // transform: translateY(-50%);
-    //     opacity: 0;
-    // }
+    .slide-enter-from,
+    .slide-leave-to {
+        // transform: translateY(-50%);
+        opacity: 0;
+    }
     
     
 
