@@ -1,4 +1,5 @@
 @import 'variables';
+@import 'animation.scss';
 
 * {
     margin: 0;
@@ -22,4 +23,14 @@ a {
 
 .cursor {
     cursor: pointer;
+}
+
+.wrap-text {
+    overflow: hidden;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    word-break: break-word;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
 }

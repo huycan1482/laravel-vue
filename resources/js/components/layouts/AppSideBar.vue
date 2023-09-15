@@ -1,61 +1,35 @@
 <template>
-    <aside class="p-3 box-shadow">
+    <aside class="p-3 box-shadow wrap-text slide-toggle-x" :class="{show:menuApp.show}" >
+        <!-- @mouseover="menuApp.show = true" -->
+        <!-- , 'aside-hover':menuApp.hover -->
         <div class="app-brand d-flex justify-content-between align-items-center">
             <div class="app-brand-link d-flex align-items-center">
                 <!-- <img src="" alt=""> -->
                 <i class="fa-brands fa-slack brand-logo cursor"></i>
-                <span class="app-brand-name">App Vue</span>
+                <span class="app-brand-name">{{ menuApp.name }}</span>
             </div>
-            <div class="app-brand-toggle d-flex align-items-center">
+            <div class="app-brand-toggle d-flex align-items-center" @click="menuApp.show = !menuApp.show">
                 <i class="fa-solid fa-bars toggle-brand cursor"></i>
             </div>
         </div>
         <div class="app-menu">
             <ul class="list-menu">
-                <li class="menu-item">
-                    <a href="#" class="menu-link active">
-                        <i class="fa-solid fa-house"></i>
-                        <div class="menu-text">Home</div>
+                <li class="menu-item" v-for="menu in menus" :key="menu.id">
+                    <a href="#" class="" :class="[menu.active ? 'active' : '', ((menu.children.length) > 0) ? 'menu-toggle' : 'menu-link']" @click="menu.active = !menu.active">
+                        <i class="" :class="menu.icon"></i>
+                        <div class="menu-text">{{ menu.name }}</div>
+                        <div :class="['icon-arrow icon-rotate', menu.active ? '' : 'right-90']" v-if="(menu.children.length) > 0">
+                            <i class="fa-solid fa-caret-down "></i>
+                        </div>
                     </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-toggle" @click="slide = !slide">
-                        <!-- <div class> -->
-                            <i class="fa-solid fa-house"></i>
-                            <div class="menu-text">Home</div>
-                        <!-- </div> -->
-                        <i class="fa-solid fa-caret-down icon-arrow"></i>
-                    </a>
-
-                    <!-- <Transition name="slide"> -->
-                    <ul :class="['menu-sub', slide ? 'show' : ''] ">
-                    <!-- <ul class="menu-sub" v-if="slide"> -->
-                        <li class="menu-item">
-                            <a href="#" class="menu-link">
-                                <i class="fa-solid fa-house"></i>
-                                <div class="menu-text">Home 1</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="#" class="menu-link">
-                                <i class="fa-solid fa-house"></i>
-                                <div class="menu-text">Home 1</div>
+                    <ul :class="['menu-sub slide-toggle-y', menu.active ? 'show' : '']" v-if="(menu.children.length) > 0">
+                        <li class="menu-item" v-for="menuItem in menu.children" :key="menuItem.id">
+                            <a href="#" class="menu-link" :class="{active:menuItem.active}">
+                                <i class="" :class="menuItem.icon"></i>
+                                <div class="menu-text">{{ menuItem.name }}</div>
                             </a>
                         </li>
                     </ul>
-                    <!-- </Transition> -->
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <i class="fa-solid fa-house"></i>
-                        <div class="menu-text">Home</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="#" class="menu-link">
-                        <i class="fa-solid fa-house"></i>
-                        <div class="menu-text">Home</div>
-                    </a>
                 </li>
             </ul>
         </div>
@@ -63,23 +37,110 @@
 </template>
 
 <script>
+import { ref } from 'vue'
+
 export default {
     name: "AppSideBar",
-    props: ['slide'],
+    setup(props, context) {
+        const menuApp = ref({
+            'icon' : '',
+            'name' : 'App Vue',
+            'show' : true, 
+            'hover': false,
+        })
+
+        const menus = ref([
+            {
+                'id': 1,
+                'name': 'Menu 1',
+                'active': true,
+                'link': '',
+                'icon': 'fa-solid fa-house',
+                'children': [
+                    {
+                        'id': 1.1,
+                        'name': 'Menu sub 1',
+                        'active': true,
+                        'link': '',
+                        'icon': 'fa-solid fa-house',
+                        'children': ''
+                    },
+                    {
+                        'id': 1.2,
+                        'name': 'Menu sub 2',
+                        'active': false,
+                        'link': '',
+                        'icon': 'fa-solid fa-house',
+                        'children': ''
+                    },
+                ]
+            }, 
+            {
+                'id': 2,
+                'name': 'Menu 2',
+                'active': false,
+                'link': '',
+                'icon': 'fa-solid fa-house',
+                'children': []
+            },
+            {
+                'id': 3,
+                'name': 'Menu 3',
+                'active': false,
+                'link': '',
+                'icon': 'fa-solid fa-house',
+                'children': []
+            }
+        ])
+
+
+        if (!menuApp.show) {
+
+        }
+
+        return {
+            menuApp,
+            menus,
+        }
+    }
 }
 </script>
 
 <style lang="scss" scoped>
     @import "../../../sass/main.scss";
-    
     aside {
         background-color: #ffff;
         height: 100vh;
         width: 16rem;
-    }
 
+        &.slide-toggle-x {
+            max-width: 70px;
+        }
+
+        &.slide-toggle-x:not(.show) {
+            transition: .3s;
+            .menu-sub {
+                max-height: 0;
+                transition: .4s;
+            }
+
+            .menu-item {
+                .menu-text {
+                    transition: .4s;
+                    margin-left: 26px;
+                }
+
+                .menu-toggle .icon-arrow {
+                    display: none;
+                }
+            }
+
+        }
+
+    }
     .app-brand {
         width: 100%;
+        padding: 0 5px;
         &-link {
             .app-brand-name {
                 color: $default-color;
@@ -89,6 +150,7 @@ export default {
                 width: 30px;
                 height: 30px;
                 color: #7367f0;
+                margin-right: 20px;
             }
             .toggle-brand {
                 width: 30px;
@@ -138,6 +200,7 @@ export default {
                     .icon-arrow {
                         position: absolute;
                         right: 5px;
+                        display: block;
                     }
                 }
 
@@ -156,33 +219,18 @@ export default {
         }
     }
 
-    .menu-sub {
-        max-height: 0;
-        transition: .5s;
-            // transition: 1s;
 
-        overflow: hidden;
-        // animation: slideUp 1s infinite;
-
-        &.show {
-            transition: 1s;
-            max-height: 100vh;
-            // transform: translateY(-100%);
-            // animation: slideDown 1s infinite;
+    .menu-toggle {
+        &.active {
+            background: #f8f8f8;
         }
     }
 
-    .slide-enter-active,
-    .slide-leave-active {
-        transition: 0.5s;
+    .menu-sub {
+        display: flex;
+        flex-direction: column;
+        // max-height: 100%;
+        transition: .5s;
     }
-
-    .slide-enter-from,
-    .slide-leave-to {
-        // transform: translateY(-50%);
-        opacity: 0;
-    }
-    
-    
 
 </style>
