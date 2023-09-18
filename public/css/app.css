@@ -9282,6 +9282,9 @@ a {
   text-decoration: none;
   color: #5d596c;
 }
+a:hover {
+  color: #5d596c;
+}
 
 .box-shadow {
   box-shadow: 0 0.125rem 0.25rem rgba(165, 163, 174, 0.3);

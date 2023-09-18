@@ -26,6 +26,7 @@
         "@fortawesome/vue-fontawesome": "^3.0.3",
         "boostrap": "^2.0.0",
         "bootstrap-vue": "^2.23.1",
+        "uuid": "^9.0.1",
         "vue": "^3.2.36",
         "vue-loader": "^17.2.2",
         "vue-router": "^4.0.13"

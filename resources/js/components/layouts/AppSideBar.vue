@@ -1,5 +1,5 @@
 <template>
-    <aside class="p-3 box-shadow wrap-text slide-toggle-x" :class="{show:menuApp.show}" >
+    <aside class="p-3 box-shadow wrap-text slide-toggle-x" :class="{show:menuApp.show, 'menu-hover':menuApp.hover}" @mouseover="asideMouseOver" @mouseleave="asideMouseLeave">
         <!-- @mouseover="menuApp.show = true" -->
         <!-- , 'aside-hover':menuApp.hover -->
         <div class="app-brand d-flex justify-content-between align-items-center">
@@ -8,7 +8,7 @@
                 <i class="fa-brands fa-slack brand-logo cursor"></i>
                 <span class="app-brand-name">{{ menuApp.name }}</span>
             </div>
-            <div class="app-brand-toggle d-flex align-items-center" @click="menuApp.show = !menuApp.show">
+            <div class="app-brand-toggle d-flex align-items-center" @click="asideHover">
                 <i class="fa-solid fa-bars toggle-brand cursor"></i>
             </div>
         </div>
@@ -37,28 +37,28 @@
 </template>
 
 <script>
-import { ref } from 'vue'
-
+import { ref, reactive } from 'vue'
+import {v4 as uuid} from 'uuid'
 export default {
     name: "AppSideBar",
     setup(props, context) {
-        const menuApp = ref({
+        const menuApp = reactive({
             'icon' : '',
             'name' : 'App Vue',
             'show' : true, 
             'hover': false,
         })
 
-        const menus = ref([
+        const menus = reactive([
             {
-                'id': 1,
+                'id': uuid(),
                 'name': 'Menu 1',
                 'active': true,
                 'link': '',
                 'icon': 'fa-solid fa-house',
                 'children': [
                     {
-                        'id': 1.1,
+                        'id': uuid(),
                         'name': 'Menu sub 1',
                         'active': true,
                         'link': '',
@@ -66,7 +66,7 @@ export default {
                         'children': ''
                     },
                     {
-                        'id': 1.2,
+                        'id': uuid(),
                         'name': 'Menu sub 2',
                         'active': false,
                         'link': '',
@@ -76,7 +76,7 @@ export default {
                 ]
             }, 
             {
-                'id': 2,
+                'id': uuid(),
                 'name': 'Menu 2',
                 'active': false,
                 'link': '',
@@ -84,7 +84,7 @@ export default {
                 'children': []
             },
             {
-                'id': 3,
+                'id': uuid(),
                 'name': 'Menu 3',
                 'active': false,
                 'link': '',
@@ -93,14 +93,25 @@ export default {
             }
         ])
 
+        const asideHover = () => {
+            menuApp.hover = !menuApp.hover;
+            menuApp.show = menuApp.hover ? !menuApp.show : true;
+        }
 
-        if (!menuApp.show) {
+        const asideMouseOver = () => {
+            (menuApp.hover) ? (menuApp.show = true) : ''
+        }
 
+        const asideMouseLeave = () => {
+            (menuApp.hover) ? (menuApp.show = false) : ''
         }
 
         return {
             menuApp,
             menus,
+            asideHover,
+            asideMouseOver,
+            asideMouseLeave,
         }
     }
 }
@@ -116,7 +127,7 @@ export default {
         &.slide-toggle-x {
             max-width: 70px;
         }
-
+// :not(:hover)
         &.slide-toggle-x:not(.show) {
             transition: .3s;
             .menu-sub {
@@ -219,7 +230,6 @@ export default {
         }
     }
 
-
     .menu-toggle {
         &.active {
             background: #f8f8f8;
@@ -231,6 +241,13 @@ export default {
         flex-direction: column;
         // max-height: 100%;
         transition: .5s;
+    }
+
+    .menu-hover {
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 100;
     }
 
 </style>

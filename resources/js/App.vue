@@ -1,8 +1,8 @@
 <template>
     <div class="d-flex" style="background-color: #f8f7fa">
         <SideBar/>
-        <div class="layout-page">
-            <nav class="layout-navbar"></nav>
+        <div class="layout-page container">
+            <Navbar/>
             <div class="content-wrapper">
                 <router-view/>
             </div>
@@ -13,13 +13,14 @@
 
 <script>
 import SideBar from "./components/layouts/AppSideBar";
+import Navbar from "./components/layouts/AppNavbar";
 
 export default {
     name: "App",
-    components: {SideBar},
+    components: {SideBar, Navbar},
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 
 </style>
