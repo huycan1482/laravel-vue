@@ -144,8 +144,12 @@ export default {
             position: absolute;
             float: left;
             border: 1px solid transparent;
-
+            & > li {
+                padding: 0 5px;
+            }
             .dropdown-item:hover, .dropdown-item:focus  {
+                // border: 1px solid transparent;
+                border-radius: 3px;
                 color: #7367f0;
                 background-color: rgba(115, 103, 240, 0.08);
             }
