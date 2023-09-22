@@ -1,8 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router"
-import UserList from "../components/users/ListUser.vue"
+
+import UserApp from "../components/users/UserApp.vue"
+import UserList from "../components/users/UserList.vue"
+import UserCreate from "../components/users/UserCreate.vue"
 
 const routes = [
-	{ path: '/user', component: UserList },
+	{ path: '/users', component: UserApp, children: [
+		{ path: '', component: UserList, name: 'user.index' },
+		{ path: 'create', component: UserCreate, name: 'user.create' },
+	]},
 	// { path: '/user', component: UserPage, children: [
 	// 	{ path: '', component: UserList, name: 'user.index' },
 	// 	{ path: 'create', component: UserCreate, name: 'user.create' },

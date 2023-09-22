@@ -1,5 +1,5 @@
 <template>
-    <nav class="p-3 m-3 layout-navbar box-shadow">
+    <nav class="p-3 layout-navbar box-shadow">
         <div class="">
 
         </div>

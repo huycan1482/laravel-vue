@@ -3,7 +3,7 @@
         <SideBar/>
         <div class="layout-page container">
             <Navbar/>
-            <div class="content-wrapper">
+            <div class="content-wrapper p-3 mt-3 box">
                 <router-view/>
             </div>
         </div>
@@ -22,5 +22,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
+    .layout-page {
+        // padding-top: 15px;
+        // padding-bottom: 15px;
+        padding: 15px 30px !important;
+        min-height: 100vh;
+    }
 </style>
