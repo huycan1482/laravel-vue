@@ -11,10 +11,14 @@
         background-color: #7367f0;
         border-color: #7367f0;
 
-        &:hover, &:active {
-            color: #fff;
-            background-color: #685dd8;
-            border-color: #685dd8;
+        &:hover, &:active, &:focus {
+            color: #fff !important;
+            background-color: #685dd8 !important;
+            border-color: #685dd8 !important;
+        }
+
+        &:focus {
+            box-shadow: 0 0 0 0.2rem rgba(115, 103, 240, 0.5) !important;
         }
     }   
 }

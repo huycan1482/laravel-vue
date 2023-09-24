@@ -20,6 +20,7 @@ export default function useUser () {
 
     const storeUser = async (data) => {
         errorText.value = ''
+        errors.value = ''
         try {
             await axios.post('/api/users', data)
             // await router.push({name: 'user.index'})
@@ -37,6 +38,7 @@ export default function useUser () {
 
     const updateUser = async (id) => {
         errorText.value = ''
+        errors.value = ''
         try {
             await axios.put('/api/users/' + id, user.value)
             // await router.push({name: 'user.index'})
@@ -47,6 +49,7 @@ export default function useUser () {
                 for (const key in e.response.data.errors) {
                     errorText.value += e.response.data.errors[key][0] + ' '
                 }
+                errors.value = e.response.data.errors
             }
         }
     }

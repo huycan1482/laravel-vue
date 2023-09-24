@@ -18,12 +18,12 @@
             </thead>
             <tbody>
                 <tr v-for="(user, key) in users" :key="user.id">
-                    <th scope="row">{{ key + 1 }}</th>
+                    <th scope="row" @click="showAlert">{{ key + 1 }}</th>
                     <td>{{ user.email }}</td>
                     <td>{{ user.name }}</td>
                     <td>{{ `${formatDate(user.created_at).date} ${formatDate(user.created_at).time}` }}</td>
                     <td>
-                        <router-link :to="{}" type="button" class="btn btn-primary">Edit</router-link>
+                        <router-link :to="{ name: 'user.edit', params: { id: user.id } }" type="button" class="btn btn-primary">Edit</router-link>
                     </td>
                 </tr>
             </tbody>
@@ -35,6 +35,7 @@
 import useUser from "../../composables/Model/user"
 import { onMounted } from "vue"
 import commonFunc from "../../composables/Common/common-functions"
+import Swal from 'sweetalert2'
 
 export default {
     setup () {
@@ -43,9 +44,14 @@ export default {
 
         onMounted(getUsers)
 
+        const showAlert = () => {
+            Swal.fire('Hello Vue world!!!');
+        }
+
         return {
             users,
             formatDate,
+            showAlert
         }
     }
 }

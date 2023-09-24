@@ -3,22 +3,21 @@
         
     </div>
     <div class="content-body">
-        <div class="mt-2 mb-6 text-sm text-red-600" v-if="errorText !== ''">
+        <!-- <div class="mt-2 mb-6 text-sm text-red-600" v-if="errorText !== ''">
             {{ errorText }}
-        </div>
+        </div> -->
         <div class="">
-            <form @submit.prevent="saveUser">
+            <form @submit.prevent="saveUser" class="">
                 <div class="mb-3">
                     <label for="inputName" class="form-label">Name</label>
-                    <input type="text" class="form-control" id="inputName" v-model="form.name">
-                    <!-- <div class="form-text">We'll never share your email with anyone else.</div> -->
+                    <input type="text" class="form-control" id="inputName" v-model="form.name" >
+                    <span class="red-text" v-if="errors.name">{{ errors.name[0] }}</span>
                 </div>
                 <div class="mb-3">
                     <label for="inputEmail" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" v-model="form.email">
-                    <!-- <div class="form-text">We'll never share your email with anyone else.</div> -->
+                    <input type="email" class="form-control" id="inputEmail" v-model="form.email">
+                    <span class="red-text" v-if="errors.email">{{ errors.email[0] }}</span>
                 </div>
-                
                 <!-- <div class="mb-3 form-check">
                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
                     <label class="form-check-label" for="exampleCheck1">Check me out</label>
@@ -42,7 +41,6 @@ export default {
         }
     },
     setup(props) {
-
         let form = reactive({
             'id': null,
             'name': '',
@@ -52,7 +50,6 @@ export default {
         const { user, errorText, errors, getUser, storeUser, updateUser } = useUser()
 
         if (props.userId) {
-
             onMounted(() => {
               getUser(props.userId)
             })
@@ -63,10 +60,6 @@ export default {
             props.userId
                 ? await updateUser(props.userId)
                 : await storeUser({ ...form })
-        }
-
-        if (errors) {
-            console.log("DH", errors);
         }
 
         return {

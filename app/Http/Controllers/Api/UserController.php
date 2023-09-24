@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\User\CreateRequest;
+use App\Http\Requests\Api\User\EditRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -30,8 +31,9 @@ class UserController extends Controller
         return response()->json(['success' => true, 'data' => $user]);
     }
 
-    public function update (Request $request, $id)
+    public function update (EditRequest $request, $id)
     {
+        dd($request->all(), $id);
         $user = User::find($id);
         if (!empty($user)) {
             $user->update($request->all());
