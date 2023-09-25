@@ -26,14 +26,14 @@ class UserController extends Controller
 
     public function store (CreateRequest $request)
     {
-        dd($request->all());
+        // dd($request->all());
         $user = User::create($request->all());
         return response()->json(['success' => true, 'data' => $user]);
     }
 
     public function update (EditRequest $request, $id)
     {
-        dd($request->all(), $id);
+        // dd($request->all(), $id);
         $user = User::find($id);
         if (!empty($user)) {
             $user->update($request->all());
@@ -46,7 +46,8 @@ class UserController extends Controller
         $user = User::find($id);
         if (!empty($user)) {
             $user->delete();
+            return response()->json(['success' => true, 'data' => 'Destroy completed']);
         }
-        return response()->json(['success' => true, 'data' => '']);
+        return response()->json(['success' => false, 'data' => 'User not found']);
     }
 }

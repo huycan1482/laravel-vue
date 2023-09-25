@@ -12026,6 +12026,13 @@ textarea.form-control-lg {
   box-shadow: 0 0 0 0.2rem rgba(115, 103, 240, 0.5) !important;
 }
 
+.badge:hover {
+  color: #fff;
+}
+.badge.bg-primary {
+  background-color: #685dd8 !important;
+}
+
 * {
   margin: 0;
   padding: 0;

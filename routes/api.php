@@ -18,6 +18,19 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // });
 
+Route::group(['prefix' => 'auth'], function ($router) {
+    Route::post('login', 'AuthController@login');
+    Route::post('logout', 'AuthController@logout');
+    Route::post('refresh', 'AuthController@refresh');
+    Route::post('me', 'AuthController@me');
+    Route::post('register', 'AuthController@register');
+
+});
+
+Route::group(['middleware' => 'jwt.auth'], function () {
+    Route::get('test-login', 'AuthController@testLogin');
+});
+
 Route::prefix('users')->group(function () {
     Route::get('/getAll', 'UserController@getAll');
     Route::get('/{user}', 'UserController@show');

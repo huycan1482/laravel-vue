@@ -22,3 +22,13 @@
         }
     }   
 }
+
+.badge {
+    &:hover {
+        color: #fff;
+    }
+
+    &.bg-primary {
+        background-color: #685dd8 !important;
+    }
+}

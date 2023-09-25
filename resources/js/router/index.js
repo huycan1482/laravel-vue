@@ -1,11 +1,14 @@
 import { createRouter, createWebHistory } from "vue-router"
 
+import AppLogin from "../components/auth/AppLogin.vue"
+
 import UserApp from "../components/users/UserApp.vue"
 import UserList from "../components/users/UserList.vue"
 import UserCreate from "../components/users/UserCreate.vue"
 import UserEdit from "../components/users/UserEdit.vue"
 
 const routes = [
+	{ path: '/login', component: AppLogin, name: 'auth.login'},
 	{ path: '/users', component: UserApp, children: [
 		{ path: '', component: UserList, name: 'user.index' },
 		{ path: 'create', component: UserCreate, name: 'user.create' },

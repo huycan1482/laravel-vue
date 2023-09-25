@@ -1,8 +1,9 @@
 <template>
-    <div class="content-header">
+    <div class="content-header d-flex">
         <h5>User List</h5>
-        <div class="">
-
+        <div class="ms-2">
+            <!-- <span class="badge bg-primary cursor">+ Add User</span> -->
+            <router-link :to="{ name: 'user.create' }" type="button" class="badge bg-primary cursor">+ Add User</router-link>
         </div>
     </div>
     <div class="content-body">
@@ -18,12 +19,13 @@
             </thead>
             <tbody>
                 <tr v-for="(user, key) in users" :key="user.id">
-                    <th scope="row" @click="showAlert">{{ key + 1 }}</th>
+                    <th scope="row">{{ key + 1 }}</th>
                     <td>{{ user.email }}</td>
                     <td>{{ user.name }}</td>
                     <td>{{ `${formatDate(user.created_at).date} ${formatDate(user.created_at).time}` }}</td>
                     <td>
-                        <router-link :to="{ name: 'user.edit', params: { id: user.id } }" type="button" class="btn btn-primary">Edit</router-link>
+                        <router-link :to="{ name: 'user.edit', params: { id: user.id } }" type="button" class="btn btn-primary me-2">Edit</router-link>
+                        <div @click="confirmDeleteUser(user.id)" class="btn btn-danger">Delete</div>
                     </td>
                 </tr>
             </tbody>
@@ -33,32 +35,50 @@
 
 <script>
 import useUser from "../../composables/Model/user"
-import { onMounted } from "vue"
-import commonFunc from "../../composables/Common/common-functions"
-import Swal from 'sweetalert2'
+import { onMounted, inject } from "vue"
+import commonFunc from "../../composables/Common/common"
 
 export default {
     setup () {
-        const {users, getUsers} = useUser()
-        const {formatDate} = commonFunc()
+        const swal = inject('$swal')
+        const { users, getUsers, destroyUser } = useUser()
+        const { formatDate } = commonFunc()
 
         onMounted(getUsers)
 
-        const showAlert = () => {
-            Swal.fire('Hello Vue world!!!');
+        const deleteUser = async (id) => {
+            await destroyUser(id);
+            await getUsers();
         }
+
+        const confirmDeleteUser = (id) => {
+            swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    deleteUser(id);
+                }
+            })
+            
+        }
+
+        
 
         return {
             users,
             formatDate,
-            showAlert
+            confirmDeleteUser,
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-    .content-header {
-        
-    }
+    
 </style>>

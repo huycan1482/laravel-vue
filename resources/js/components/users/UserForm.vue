@@ -1,6 +1,9 @@
 <template>
-    <div class="content-header">
-        
+    <div class="content-header d-flex">
+        <h5>User Form</h5>
+        <div class="ms-2">
+            <router-link :to="{ name: 'user.index' }" type="button" class="badge bg-primary cursor">User List</router-link>
+        </div>
     </div>
     <div class="content-body">
         <!-- <div class="mt-2 mb-6 text-sm text-red-600" v-if="errorText !== ''">
@@ -67,7 +70,6 @@ export default {
             errorText,
             form,
             saveUser,
-            
         }
     },
 }
