@@ -8,12 +8,6 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller 
 {
-
-    public function __construct()
-    {
-        // $this->middleware('auth:api', ['except' => ['api/auth/login', 'api/auth/register']]);
-    }
-    
     public function login()
     {
         $credentials = request(['email', 'password']);
@@ -24,7 +18,7 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
-    public function me()
+    public function user()
     {
         return response()->json(auth('api')->user());
     }
@@ -59,6 +53,5 @@ class AuthController extends Controller
     public function testLogin(Request $request)
     {
         dd(Auth::user(), 3333);
-        dd($request->all());
     }
 }

@@ -1,8 +1,11 @@
 import axios from 'axios'
 import { ref } from 'vue'
 import commonFunc from "../../composables/Common/common"
+import apiCaller from '../../plugins/axios';
 
 export default function useUser () {
+    const axiosInstance = apiCaller();
+
     const users = ref([])
     const user = ref([])
     // const router = useRouter()
@@ -12,7 +15,7 @@ export default function useUser () {
     const { sweetAlert, sweetAlertChangePage } = commonFunc()
 
     const getUsers = async () => {
-        let response = await axios.get('/api/users/getAll')
+        let response = await axiosInstance.get('/api/users/getAll')
         users.value = response.data.data
     }
 

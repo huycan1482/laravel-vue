@@ -14,8 +14,8 @@
         </div>
         <div class="app-menu">
             <ul class="list-menu">
-                <li class="menu-item" v-for="menu in menus" :key="menu.id">
-                    <a href="#" class="" :class="[menu.active ? 'active' : '', ((menu.children.length) > 0) ? 'menu-toggle' : 'menu-link']" @click="menu.active = !menu.active">
+                <li class="menu-item" v-for="menu in navBars" :key="menu.id">
+                    <a href="#" class="" :class="[menu.active ? 'active' : '', ((menu.children.length) > 0) ? 'menu-toggle' : 'menu-link']" @click="activeItem(menu)">
                         <i class="" :class="menu.icon"></i>
                         <div class="menu-text">{{ menu.name }}</div>
                         <div :class="['icon-arrow icon-rotate', menu.active ? '' : 'right-90']" v-if="(menu.children.length) > 0">
@@ -37,10 +37,13 @@
 </template>
 
 <script>
-import { ref, reactive } from 'vue'
-import {v4 as uuid} from 'uuid'
+import { reactive } from 'vue'
+import {mapState, mapMutations} from 'vuex'
+
 export default {
     name: "AppSideBar",
+    computed: { ...mapState(['navBars'])},
+    methods: { ...mapMutations(['activeItem'])},
     setup(props, context) {
         const menuApp = reactive({
             'icon' : '',
@@ -48,50 +51,6 @@ export default {
             'show' : true, 
             'hover': false,
         })
-
-        const menus = reactive([
-            {
-                'id': uuid(),
-                'name': 'Menu 1',
-                'active': true,
-                'link': '',
-                'icon': 'fa-solid fa-house',
-                'children': [
-                    {
-                        'id': uuid(),
-                        'name': 'Menu sub 1',
-                        'active': true,
-                        'link': '',
-                        'icon': 'fa-solid fa-house',
-                        'children': ''
-                    },
-                    {
-                        'id': uuid(),
-                        'name': 'Menu sub 2',
-                        'active': false,
-                        'link': '',
-                        'icon': 'fa-solid fa-house',
-                        'children': ''
-                    },
-                ]
-            }, 
-            {
-                'id': uuid(),
-                'name': 'Menu 2',
-                'active': false,
-                'link': '',
-                'icon': 'fa-solid fa-house',
-                'children': []
-            },
-            {
-                'id': uuid(),
-                'name': 'Menu 3',
-                'active': false,
-                'link': '',
-                'icon': 'fa-solid fa-house',
-                'children': []
-            }
-        ])
 
         const asideHover = () => {
             menuApp.hover = !menuApp.hover;
@@ -108,7 +67,6 @@ export default {
 
         return {
             menuApp,
-            menus,
             asideHover,
             asideMouseOver,
             asideMouseLeave,

@@ -20,19 +20,34 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'auth'], function ($router) {
     Route::post('login', 'AuthController@login');
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', 'AuthController@me');
-    Route::post('register', 'AuthController@register');
+    // Route::post('register', 'AuthController@register');
+
+    Route::group(['middleware' => 'auth.jwt'], function () {
+        Route::post('logout', 'AuthController@logout');
+        Route::post('refresh', 'AuthController@refresh');
+        Route::post('user', 'AuthController@user');
+    });
 
 });
 
-Route::group(['middleware' => 'jwt.auth'], function () {
+Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('test-login', 'AuthController@testLogin');
+
+    // Route::prefix('users')->group(function () {
+    //     Route::get('/getAll', 'UserController@getAll');
+    //     Route::get('/{user}', 'UserController@show');
+    //     Route::post('/', 'UserController@store');
+    //     Route::put('/{user}', 'UserController@update');
+    //     Route::delete('/{user}', 'UserController@destroy');
+    // });
+
+    Route::prefix('users')->group(function () {
+        Route::get('/getAll', 'UserController@getAll');
+    });
 });
 
 Route::prefix('users')->group(function () {
-    Route::get('/getAll', 'UserController@getAll');
+    // Route::get('/getAll', 'UserController@getAll');
     Route::get('/{user}', 'UserController@show');
     Route::post('/', 'UserController@store');
     Route::put('/{user}', 'UserController@update');
