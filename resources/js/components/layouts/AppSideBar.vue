@@ -15,7 +15,7 @@
         <div class="app-menu">
             <ul class="list-menu">
                 <li class="menu-item" v-for="menu in navBars" :key="menu.id">
-                    <a href="#" class="" :class="[menu.active ? 'active' : '', ((menu.children.length) > 0) ? 'menu-toggle' : 'menu-link']" @click="activeItem(menu)">
+                    <a href="#" class="" :class="[menu.active ? 'active' : '', ((menu.children.length) > 0) ? 'menu-toggle' : 'menu-link']" @click="ACTIVE_ITEM(menu)">
                         <i class="" :class="menu.icon"></i>
                         <div class="menu-text">{{ menu.name }}</div>
                         <div :class="['icon-arrow icon-rotate', menu.active ? '' : 'right-90']" v-if="(menu.children.length) > 0">
@@ -38,12 +38,12 @@
 
 <script>
 import { reactive } from 'vue'
-import {mapState, mapMutations} from 'vuex'
+import {mapGetters, mapMutations} from 'vuex'
 
 export default {
     name: "AppSideBar",
-    computed: { ...mapState(['navBars'])},
-    methods: { ...mapMutations(['activeItem'])},
+    computed: mapGetters(['navBars']),
+    methods: { ...mapMutations(['ACTIVE_ITEM'])},
     setup(props, context) {
         const menuApp = reactive({
             'icon' : '',

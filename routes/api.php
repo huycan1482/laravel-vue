@@ -33,23 +33,13 @@ Route::group(['prefix' => 'auth'], function ($router) {
 Route::group(['middleware' => 'auth.jwt'], function () {
     Route::get('test-login', 'AuthController@testLogin');
 
-    // Route::prefix('users')->group(function () {
-    //     Route::get('/getAll', 'UserController@getAll');
-    //     Route::get('/{user}', 'UserController@show');
-    //     Route::post('/', 'UserController@store');
-    //     Route::put('/{user}', 'UserController@update');
-    //     Route::delete('/{user}', 'UserController@destroy');
-    // });
-
     Route::prefix('users')->group(function () {
         Route::get('/getAll', 'UserController@getAll');
+        Route::get('/{user}', 'UserController@show');
+        Route::post('/', 'UserController@store');
+        Route::put('/{user}', 'UserController@update');
+        Route::delete('/{user}', 'UserController@destroy');
     });
 });
 
-Route::prefix('users')->group(function () {
-    // Route::get('/getAll', 'UserController@getAll');
-    Route::get('/{user}', 'UserController@show');
-    Route::post('/', 'UserController@store');
-    Route::put('/{user}', 'UserController@update');
-    Route::delete('/{user}', 'UserController@destroy');
-});
+
