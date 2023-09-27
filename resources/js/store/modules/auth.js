@@ -1,8 +1,10 @@
-import { stat } from 'fs';
-import apiCaller from '../../plugins/axios';
+// import apiCaller from '../../plugins/axios';
+import axios from 'axios';
+import router from '../../router/index';
 
-const axiosInstance = apiCaller();
- 
+// const axiosInstance = apiCaller();
+// const router = useRouter()
+
 const state = {
     auth: {
         isAuthenticated: false,
@@ -23,11 +25,11 @@ const getters = {
 }
 
 const actions = {
-    async login (data) {
-        // const { data: { data: { user, payload } } } = await axiosInstance.post('/api/auth/login', data);
-        const res = await axiosInstance.post('/api/auth/login', data);
-
-        console.log("DH", res);
+    async login ({commit}, data) {
+        const { data: { data: { user, payload } } } = await axios.post('/api/auth/login', data);
+        commit('SET_USER', user)
+        commit('SET_AUTHENTICATED', payload)
+        router.push({name: 'user.index'})
     }
 }
 
@@ -35,6 +37,7 @@ const mutations = {
     SET_AUTHENTICATED (state, {accessToken, refreshToken = ''}) {
         state.auth.accessToken = accessToken
         state.auth.refreshToken = refreshToken
+        state.auth.isAuthenticated = true
     },
     SET_USER (state, {email, name, id}) {
         state.userLogin.email = email

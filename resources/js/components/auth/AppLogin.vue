@@ -8,12 +8,12 @@
                 <form @submit.prevent="postLogin" class="">
                     <div class="mb-3">
                         <label for="inputEmail" class="form-label">Email address</label>
-                        <input type="email" class="form-control" id="inputEmail" v-model="loginForm.email">
+                        <input type="email" class="form-control" id="inputEmail" v-model="email">
                         <span class="red-text"></span>
                     </div>
                     <div class="mb-3">
                         <label for="inputPassword" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="inputPassword" v-model="loginForm.password">
+                        <input type="password" class="form-control" id="inputPassword" v-model="password">
                         <span class="red-text"></span>
                     </div>
                     <button type="submit" class="btn btn-primary">Login</button>
@@ -25,22 +25,26 @@
 
 <script>
 import { mapMutations, mapActions } from "vuex"
+// import { useRouter } from 'vue-router';
+
 export default {
     name: 'AppLogin',
-    methods: { ...mapActions(['login'])},
-    setup() {
-        let loginForm = {
+    methods: { 
+        ...mapActions(['login']),
+
+        postLogin() {
+            const formData = {
+                email: this.email,
+                password: this.password,
+            }
+            this.login(formData)
+            // this.$router.push({name: 'user.index'})
+        },
+    },
+    data() {
+        return {
             email: '',
             password: '',
-        }
-
-        const postLogin = () => {
-
-        }
-
-        return {
-            loginForm,
-            postLogin,
         }
     }
     
