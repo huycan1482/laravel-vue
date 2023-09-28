@@ -1,14 +1,16 @@
 // import apiCaller from '../../plugins/axios';
 import axios from 'axios';
+import VueCookies from 'vue3-cookies';
 import router from '../../router/index';
+import AuthService from '../../services/authService';
 // const axiosInstance = apiCaller();
 // const router = useRouter()
 
 const state = {
     auth: {
-        isAuthenticated: false,
-        accessToken: null,
-        refreshToken: null,
+        isAuthenticated: AuthService.isAuthenticated,
+        accessToken: AuthService.getToken,
+        refreshToken: AuthService.getRefreshToken,
         
     },
     userLogin: {
@@ -41,6 +43,9 @@ const mutations = {
         state.auth.accessToken = accessToken
         state.auth.refreshToken = refreshToken
         state.auth.isAuthenticated = true
+
+        AuthService.saveToken(accessToken)
+        AuthService.saveRefreshToken(refreshToken)
     },
     SET_USER (state, {email, name, id}) {
         state.userLogin.email = email
