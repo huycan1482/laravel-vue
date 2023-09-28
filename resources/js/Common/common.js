@@ -35,7 +35,8 @@ export default () => {
         })
     }
 
-    const sweetAlertChangePage = (title, text, icon) => {
+    const sweetAlertChangePage = ({title, text, icon}, page) => {
+        // {title, text, icon} = type
         swal.fire({
             title: title,
             text: text,
@@ -43,7 +44,7 @@ export default () => {
             confirmButtonText: 'Close'
         }).then((result) => {
             if(result['isConfirmed']) {
-                router.push({name: 'user.index'})
+                router.push({name: page})
             }
         })
     }

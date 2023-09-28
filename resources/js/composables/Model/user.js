@@ -1,5 +1,5 @@
 import { ref } from 'vue'
-import commonFunc from "../../composables/Common/common"
+import commonFunc from "../../Common/common"
 import apiCaller from '../../plugins/axios';
 
 export default function useUser () {
@@ -27,7 +27,14 @@ export default function useUser () {
         errors.value = ''
         try {
             await axiosInstance.post('/api/users', data)
-            sweetAlertChangePage('Store success', '', 'success')
+
+            const alert = {
+                title : 'Store success',
+                text : '',
+                icon : 'success'
+            }
+            
+            sweetAlertChangePage(alert, 'user.index')
             // await router.push({name: 'user.index'})
 
         } catch (e) {
@@ -49,9 +56,15 @@ export default function useUser () {
         errors.value = ''
         try {
             await axiosInstance.put('/api/users/' + id, user.value)
-            sweetAlertChangePage('Update success', '', 'success')
+
+            const alert = {
+                title : 'Update success',
+                text : '',
+                icon : 'success'
+            }
+
+            sweetAlertChangePage(alert, 'user.index')
             // await router.push({name: 'user.index'})
-            // router.push quay lại trang cũ
         } catch (e) {
             sweetAlert('Update fail', e.response.data.message ? e.response.data.message :  '', 'error')
 

@@ -36,7 +36,7 @@
 <script>
 import useUser from "../../composables/Model/user"
 import { onMounted, inject } from "vue"
-import commonFunc from "../../composables/Common/common"
+import commonFunc from "../../Common/common"
 
 export default {
     setup () {

@@ -3,19 +3,24 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthController extends Controller 
 {
     public function login()
     {
         $credentials = request(['email', 'password']);
-        if (! $token = auth('api')->attempt($credentials)) {
+        if (! $accessToken = auth('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        return $this->respondWithToken($token);
+        $refreshToken = $this->createRefreshToken(auth('api')->user()->id, 30);
+
+        return $this->respondWithToken($accessToken, $refreshToken);
     }
 
     public function user()
@@ -27,20 +32,35 @@ class AuthController extends Controller
     {
         auth('api')->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['success' => true, 'message' => 'Successfully logged out']);
     }
 
-    public function refresh()
+    public function refreshToken (Request $request) 
     {
-        return $this->respondWithToken(auth('api')->refresh());
+        $refreshToken = $request->input('refreshToken');
+        try {
+            $decodedToken = JWTAuth::setToken($refreshToken);
+
+            //kiểm tra token_type có p refresh hay ko
+            if (in_array('refresh', $decodedToken->getPayload()->toArray())) {
+                $newAccessToken = JWTAuth::refresh($refreshToken);
+                return response(['success' => false, 'data' => ['accessToken' => $newAccessToken, 'refreshToken' => $refreshToken]]);
+            }
+            return response(['success' => false, 'message' => 'Refresh token invalid']);
+
+        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+            // Xử lý lỗi khi refresh token không hợp lệ
+            return response(['success' => false, 'message' => 'Refresh token invalid']);
+        }
+
     }
 
-    protected function respondWithToken($token)
+    protected function respondWithToken($accessToken, $refreshToken)
     {
         return response()->json([
             'success' => true, 
             'data' => [
-                'payload' => ['accessToken' => $token],
+                'payload' => ['accessToken' => $accessToken, 'refreshToken' => $refreshToken],
                 'user' => $this->guard(),
                 'tokenType' => 'bearer',
                 'expiresIn' => auth('api')->factory()->getTTL() * 60
@@ -53,8 +73,19 @@ class AuthController extends Controller
         return Auth::Guard('api')->user();
     }
 
-    public function testLogin(Request $request)
+    private function createRefreshToken ($userId, $expiration) 
     {
-        dd(Auth::user(), 3333);
+        // Tính toán thời gian hết hạn (30 ngày)
+        $expirationTime = Carbon::now()->addDays($expiration);
+
+        // Tạo refresh token với thời gian hết hạn
+        $refreshToken = JWTAuth::claims(['exp' => $expirationTime->timestamp, 'token_type' => 'refresh'])->fromUser(User::find($userId));
+
+        return ($refreshToken);
+    }
+
+    public function test ()
+    {
+        dd(123);
     }
 }

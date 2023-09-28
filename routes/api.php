@@ -20,18 +20,19 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix' => 'auth'], function ($router) {
     Route::post('login', 'AuthController@login');
+    Route::post('refresh-token', 'AuthController@refreshToken');
+
     // Route::post('register', 'AuthController@register');
 
     Route::group(['middleware' => 'auth.jwt'], function () {
         Route::post('logout', 'AuthController@logout');
-        Route::post('refresh', 'AuthController@refresh');
         Route::post('user', 'AuthController@user');
     });
 
 });
 
 Route::group(['middleware' => 'auth.jwt'], function () {
-    Route::get('test-login', 'AuthController@testLogin');
+    Route::get('test', 'AuthController@test');
 
     Route::prefix('users')->group(function () {
         Route::get('/getAll', 'UserController@getAll');

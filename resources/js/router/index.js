@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router"
 
+import store from "../store/modules/auth"
+
 import AppLogin from "../components/auth/AppLogin.vue"
 
 import AppLayout from "../components/layouts/AppLayout.vue"
@@ -10,8 +12,9 @@ import UserCreate from "../components/users/UserCreate.vue"
 import UserEdit from "../components/users/UserEdit.vue"
 
 const routes = [
-	{ path: '/', component: AppLayout, children: [
+	{ path: '/', component: AppLayout, meta: { requiresAuth: true }, children: [
 		{ path: 'users', component: UserApp, children: [
+			// component: () => import('../views/FormInfo'),
 			{ path: '', component: UserList, name: 'user.index' },
 			{ path: 'create', component: UserCreate, name: 'user.create' },
 			{ path: 'edit/:id', component: UserEdit, name: 'user.edit', props: true },
@@ -30,5 +33,19 @@ const route = createRouter({
 	history: createWebHistory(),
 	routes
 })
+
+route.beforeEach((to, from, next) => {
+    if (to.matched.some(route => route.meta.requiresAuth)) {
+		// Kiểm tra xem người dùng đã đăng nhập hay chưa
+		if (store.state.auth.isAuthenticated) {
+		  next(); // Cho phép truy cập
+		} else {
+		  // Chuyển hướng đến trang đăng nhập
+		  next('/login');
+		}
+	} else {
+		next(); // Cho phép truy cập
+	}
+});
 
 export default route
