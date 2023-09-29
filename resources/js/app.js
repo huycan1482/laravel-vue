@@ -20,6 +20,9 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 // import VueToastify from 'vue3-toastify';
 // import 'vue3-toastify/dist/index.css';
 
+import setupInterceptors from './plugins/axios';
+setupInterceptors(store);
+
 const app = createApp(App)
 app.component("font-awesome-icon", FontAwesomeIcon)
 app.use(router)

@@ -2,7 +2,7 @@
 import axios from 'axios';
 import VueCookies from 'vue3-cookies';
 import router from '../../router/index';
-import AuthService from '../../services/authService';
+import AuthService from '../../services/AuthService';
 // const axiosInstance = apiCaller();
 // const router = useRouter()
 

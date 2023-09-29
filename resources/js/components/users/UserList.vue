@@ -46,6 +46,11 @@ export default {
 
         onMounted(getUsers)
 
+        // onMounted(() => {
+        //     console.log(" hihihihihihihih");
+        //      getUsers();
+        // })
+
         const deleteUser = async (id) => {
             await destroyUser(id);
             await getUsers();

@@ -2,16 +2,18 @@
 import axios from 'axios';
 import store from "../store/modules/auth"
 import router from '../router/index';
+import axiosInstance from "../plugins/instAxios";
+import AuthService from '../services/AuthService';
 
 const apiCaller = () => {
     // const store = useStore();
     // Tạo một instance mới của Axios
-    const instance = axios.create({
-        baseURL: store.state.app.baseUrl, // Thay thế bằng base URL của API bạn muốn gọi
-    });
+    // const instance = axios.create({
+    //     baseURL: store.state.app.baseUrl, // Thay thế bằng base URL của API bạn muốn gọi
+    // });
 
     // Tạo interceptor cho yêu cầu trước khi gửi
-    instance.interceptors.request.use(
+    axiosInstance.interceptors.request.use(
         (config) => {
 
             if (store.state.auth.isAuthenticated) {
@@ -28,7 +30,7 @@ const apiCaller = () => {
     );
 
 
-    instance.interceptors.response.use(
+    axiosInstance.interceptors.response.use(
         (response) => {
             return response
         },
@@ -43,29 +45,41 @@ const apiCaller = () => {
             } else if (error.response.status === 403 && !originalRequest._retry) {
                 console.log("DH 2")
 
-                const data = instance.post('/api/auth/refresh-token', {'refreshToken' : store.state.auth.refreshToken})
+                const data = axiosInstance.post('/api/auth/refresh-token', {'refreshToken' : store.state.auth.refreshToken})
+                .then(function (response) {
+                    console.log("DH data", response.data)
+                    AuthService.saveToken(response.data.data.accessToken) 
+                    AuthService.saveRefreshToken(response.data.data.refreshToken) 
+                    store.state.auth.accessToken = response.data.data.accessToken
+                    store.state.auth.refreshToken = response.data.data.refreshToken
 
-                console.log("DH data", data.data)
-                store.state.auth.refreshToken = data.refreshToken
-                store.state.auth.accessToken = data.accessToken
+                    originalRequest._retry = true;
+
+                    axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.data.accessToken;
+                    console.log("DH data", response.data.data.accessToken)
+
+                    return axiosInstance(originalRequest);
+
+                    // return new Promise(resolve => {
+                    //     subscribeTokenRefresh(token => {
+                    //       originalRequest.headers.Authorization = `Bearer ${token}`;
+                    //       resolve(axios(originalRequest));
+                    //     });
+                    //   });
+                })
+                .catch(function (error) {
+                    
+                })
+
                 console.log("DH 3")
 
-                originalRequest._retry = true;
-                // await store.dispatch("refreshToken");
-                // store.dispatch("refreshToken");
-                // store.actions.refreshToken(1);
-
-                console.log("DH 4")
-
-                // AuthService.refreshToken();
-                return axios(originalRequest);
             }
 
             return Promise.reject(error);
         }
     );
 
-    return instance;
+    return axiosInstance;
 };
 
 export default apiCaller;
