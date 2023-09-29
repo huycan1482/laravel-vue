@@ -44,13 +44,13 @@ class AuthController extends Controller
             //kiểm tra token_type có p refresh hay ko
             if (in_array('refresh', $decodedToken->getPayload()->toArray())) {
                 $newAccessToken = JWTAuth::refresh($refreshToken);
-                return response(['success' => false, 'data' => ['accessToken' => $newAccessToken, 'refreshToken' => $refreshToken]]);
+                return response(['success' => true, 'data' => ['accessToken' => $newAccessToken, 'refreshToken' => $refreshToken]]);
             }
-            return response(['success' => false, 'message' => 'Refresh token invalid']);
+            return response(['success' => false, 'message' => 'Refresh token invalid'], 403);
 
         } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
             // Xử lý lỗi khi refresh token không hợp lệ
-            return response(['success' => false, 'message' => 'Refresh token invalid']);
+            return response(['success' => false, 'message' => 'Refresh token invalid'], 403);
         }
 
     }

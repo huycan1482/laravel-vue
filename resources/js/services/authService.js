@@ -1,12 +1,17 @@
 import { useCookies } from "vue3-cookies";
 const { cookies } = useCookies();
 
+
 const TOKEN_KEY = 'access_token';
 const REFRESH_KEY = 'refresh_token';
 
+const USER_ID = 'user_id';
+const USER_MAIL = 'user_mail';
+const USER_NAME = 'user_name';
+
 const AuthService = {
     saveToken(token) {
-        cookies.set(TOKEN_KEY, token);
+        cookies.set(TOKEN_KEY, token, "10MIN");
     },
     
     getToken : cookies.get(TOKEN_KEY),
@@ -25,7 +30,25 @@ const AuthService = {
         cookies.set(REFRESH_KEY);
     },
 
-    isAuthenticated : cookies.get(TOKEN_KEY) ? true : false,
+    isAuthenticated : cookies.isKey(TOKEN_KEY),
+
+    saveUserAuth({id, email, name}) {
+        cookies.set(USER_ID, id);
+        cookies.set(USER_MAIL, email);
+        cookies.set(USER_NAME, name);
+    },
+
+    getUserId: cookies.get(USER_ID),
+    getUserMail: cookies.get(USER_MAIL),
+    getUserName: cookies.get(USER_NAME),
+
+    clearAuth() {
+        cookies.remove(TOKEN_KEY)
+        cookies.remove(REFRESH_KEY)
+        cookies.remove(USER_ID)
+        cookies.remove(USER_MAIL)
+        cookies.remove(USER_NAME)
+    },
 };
 
 export default AuthService;

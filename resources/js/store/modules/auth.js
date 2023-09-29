@@ -14,13 +14,16 @@ const state = {
         
     },
     userLogin: {
-        id: null,
-        name: null,
-        email: null,
+        id: AuthService.getUserId,
+        name: AuthService.getUserName,
+        email: AuthService.getUserMail,
+        // id: null,
+        // name: null,
+        // email: null,
     },
     app: {
         baseUrl: 'http://laravel-vue.com'
-    }
+    },
 }
 
 const getters = {
@@ -35,6 +38,17 @@ const actions = {
         commit('SET_AUTHENTICATED', payload)
 
         router.push({name: 'user.index'})
+    },
+
+    async refreshToken ({commit, state}) {
+        
+        const input = {'refreshToken' : state.auth.refreshToken}
+        const { data: data } = await axios.post('/api/auth/refresh-token', input);
+        commit('SET_AUTHENTICATED', data)
+    },
+
+    clearAuth () {
+        AuthService.clearAuth()
     }
 }
 
@@ -51,7 +65,12 @@ const mutations = {
         state.userLogin.email = email
         state.userLogin.name = name
         state.userLogin.id = id
-    }
+
+        AuthService.saveUserAuth({email, name, id})
+    },
+    CLEAR_AUTH () {
+        AuthService.clearAuth()
+    },
 }
 
 export default {

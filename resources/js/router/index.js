@@ -38,10 +38,11 @@ route.beforeEach((to, from, next) => {
     if (to.matched.some(route => route.meta.requiresAuth)) {
 		// Kiểm tra xem người dùng đã đăng nhập hay chưa
 		if (store.state.auth.isAuthenticated) {
-		  next(); // Cho phép truy cập
+			
+		  	next(); // Cho phép truy cập
 		} else {
-		  // Chuyển hướng đến trang đăng nhập
-		  next('/login');
+			// Chuyển hướng đến trang đăng nhập
+			next('/login');
 		}
 	} else {
 		next(); // Cho phép truy cập
