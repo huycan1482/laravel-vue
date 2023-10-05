@@ -5,13 +5,14 @@ import router from '../router/index';
 import axiosInstance from "../plugins/instAxios";
 import AuthService from '../services/AuthService';
 
+
 const apiCaller = () => {
     // const store = useStore();
     // Tạo một instance mới của Axios
     // const instance = axios.create({
     //     baseURL: store.state.app.baseUrl, // Thay thế bằng base URL của API bạn muốn gọi
     // });
-
+    // console.log();
     // Tạo interceptor cho yêu cầu trước khi gửi
     axiosInstance.interceptors.request.use(
         (config) => {
@@ -34,7 +35,7 @@ const apiCaller = () => {
         (response) => {
             return response
         },
-        (error) => {
+        async(error) => {
             const originalRequest = error.config;
             if ( error.response.status === 403 && originalRequest.url.includes("/api/auth/refresh-token") ) {
                 console.log("DH 1")
@@ -45,7 +46,7 @@ const apiCaller = () => {
             } else if (error.response.status === 403 && !originalRequest._retry) {
                 console.log("DH 2")
 
-                const data = axiosInstance.post('/api/auth/refresh-token', {'refreshToken' : store.state.auth.refreshToken})
+                const data = await axiosInstance.post('/api/auth/refresh-token', {'refreshToken' : store.state.auth.refreshToken})
                 .then(function (response) {
                     console.log("DH data", response.data)
                     AuthService.saveToken(response.data.data.accessToken) 
@@ -56,9 +57,19 @@ const apiCaller = () => {
                     originalRequest._retry = true;
 
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.data.accessToken;
-                    console.log("DH data", response.data.data.accessToken)
+                    // console.log("DH data", response.data.data.accessToken)
+                    console.log("DH router", window.location.pathname);
 
-                    return axiosInstance(originalRequest);
+                    // router.replace(window.location.pathname);
+
+                    window.location.reload();
+                    
+
+                    console.log("DH router run");
+
+                    // router.go(1);
+
+                    // return axiosInstance(originalRequest);
 
                     // return new Promise(resolve => {
                     //     subscribeTokenRefresh(token => {
@@ -68,7 +79,7 @@ const apiCaller = () => {
                     //   });
                 })
                 .catch(function (error) {
-                    
+                    console.log(123,error);
                 })
 
                 console.log("DH 3")

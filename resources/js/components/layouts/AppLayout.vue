@@ -4,7 +4,7 @@
         <div class="layout-page container">
             <Navbar/>
             <div class="content-wrapper p-3 mt-3 box">
-                <router-view/>
+                <router-view replace></router-view>
             </div>
         </div>
     </div>

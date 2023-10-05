@@ -35,21 +35,35 @@
 
 <script>
 import useUser from "../../composables/Model/user"
-import { onMounted, inject } from "vue"
+import { onMounted,watch, inject, computed, ref } from "vue"
 import commonFunc from "../../Common/common"
+import route from '../../router'
+// import router from '../router/index';
+import { useRoute} from 'vue-router'
+import { useStore } from 'vuex'
+
 
 export default {
     setup () {
         const swal = inject('$swal')
+        const router = inject('$router')
         const { users, getUsers, destroyUser } = useUser()
         const { formatDate } = commonFunc()
+        const route = useRoute()
+        const store = useStore()
+        const token = ref()
 
-        onMounted(getUsers)
+        // onMounted(getUsers)
 
-        // onMounted(() => {
-        //     console.log(" hihihihihihihih");
-        //      getUsers();
-        // })
+        onMounted(() => {
+            getUsers();
+            console.log(" hihihihihihihih", users);
+        })
+
+        watch(token, async (newQuestion, oldQuestion) => {
+            console.log(123);
+        }, {deep: true})
+
 
         const deleteUser = async (id) => {
             await destroyUser(id);
@@ -57,19 +71,24 @@ export default {
         }
 
         const confirmDeleteUser = (id) => {
-            swal.fire({
-                title: 'Are you sure?',
-                text: "You won't be able to revert this!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes, delete it!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    deleteUser(id);
-                }
-            })
+            route.currentRoute;
+
+                console.log("DH", window.location.pathname);
+                return
+            route.push('/login')
+            // swal.fire({
+            //     title: 'Are you sure?',
+            //     text: "You won't be able to revert this!",
+            //     icon: 'warning',
+            //     showCancelButton: true,
+            //     confirmButtonColor: '#3085d6',
+            //     cancelButtonColor: '#d33',
+            //     confirmButtonText: 'Yes, delete it!'
+            // }).then((result) => {
+            //     if (result.isConfirmed) {
+            //         deleteUser(id);
+            //     }
+            // })
             
         }
 
@@ -77,6 +96,7 @@ export default {
 
         return {
             users,
+            token: computed(() =>{ store.getters[`${auth}/accessToken`]}),
             formatDate,
             confirmDeleteUser,
         }
