@@ -133,6 +133,7 @@ export default {
         background-color: rgba(255, 255, 255, 0.95);
         border: 1px solid transparent;
         border-radius: 3px;
+        color: #5d596c;
     }
 
     .navbar-nav {

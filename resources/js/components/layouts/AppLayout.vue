@@ -4,7 +4,7 @@
         <div class="layout-page container">
             <Navbar/>
             <div class="content-wrapper p-3 mt-3 box">
-                <router-view replace></router-view>
+                <router-view/>
             </div>
         </div>
     </div>
@@ -13,7 +13,6 @@
 
 <script>
 import SideBar from "./AppSideBar";
-
 import Navbar from "./AppNavbar";
 
 export default {
@@ -28,5 +27,9 @@ export default {
         // padding-bottom: 15px;
         padding: 15px 30px !important;
         min-height: 100vh;
+    }
+
+    .content-wrapper {
+        color: #5d596c;
     }
 </style>

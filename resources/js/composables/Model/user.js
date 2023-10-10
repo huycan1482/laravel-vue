@@ -19,7 +19,6 @@ export default function useUser () {
 
     const getUser = async (id) => {
         let response = await axiosInstance.get('/api/users/'+id)
-        console.log(123321);
         user.value = response.data.data
     }
 
