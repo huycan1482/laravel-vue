@@ -71,7 +71,6 @@ export default {
         }
         return {
             users,
-            token: computed(() =>{ store.getters[`${auth}/accessToken`]}),
             formatDate,
             confirmDeleteUser,
         }

@@ -29,17 +29,17 @@ const state = {
         }, 
         {
             'id': uuid(),
-            'name': 'Menu 2',
+            'name': 'Users',
             'active': false,
-            'link': '',
+            'link': 'user.index',
             'icon': 'fa-solid fa-house',
             'children': []
         },
         {
             'id': uuid(),
-            'name': 'Menu 3',
+            'name': 'Categories',
             'active': false,
-            'link': '',
+            'link': 'category.index',
             'icon': 'fa-solid fa-house',
             'children': []
         }

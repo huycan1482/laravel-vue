@@ -41,6 +41,14 @@ Route::group(['middleware' => 'auth.jwt'], function () {
         Route::put('/{user}', 'UserController@update');
         Route::delete('/{user}', 'UserController@destroy');
     });
+
+    Route::prefix('category')->group(function () {
+        Route::get('/getAll', 'CategoryController@getAll');
+        Route::get('/{category}', 'CategoryController@show');
+        Route::post('/', 'CategoryController@store');
+        Route::put('/{category}', 'CategoryController@update');
+        Route::delete('/{category}', 'CategoryController@destroy');
+    });
 });
 
 
