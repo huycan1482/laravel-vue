@@ -58,7 +58,21 @@ const mutations = {
     ACTIVE_ITEM(state, item) {
         state.navBars = state.navBars.map((navItem) => {
             if (item.id == navItem.id) {
-                navItem.active = !navItem.active;
+                // navItem.active = !navItem.active;
+                navItem.active = true
+            } else {
+                navItem.active = false
+            }
+
+            if (navItem.children.length > 0) {
+                navItem.children.map((child) => {
+                    if (child.id == item.id) {
+                        child.active = true
+                        navItem.active = true
+                    } else {
+                        child.active = false
+                    }
+                });
             }
             return navItem
         })
