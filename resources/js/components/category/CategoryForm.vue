@@ -92,11 +92,13 @@ export default {
 
 
                 let reader = new FileReader();
-                let vm = this;
+                // let vm = this; 
                 reader.onload = (e) => {
-                    vm.image = e.target.result;
+                    form.image = e.target.result;
                 };
                 reader.readAsDataURL(files[0]);
+
+                console.log(form.image)
             }
         }
 
