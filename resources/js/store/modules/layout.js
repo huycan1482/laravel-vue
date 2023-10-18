@@ -29,17 +29,17 @@ const state = {
         }, 
         {
             'id': uuid(),
-            'name': 'Menu 2',
+            'name': 'Users',
             'active': false,
-            'link': '',
+            'link': 'user.index',
             'icon': 'fa-solid fa-house',
             'children': []
         },
         {
             'id': uuid(),
-            'name': 'Menu 3',
+            'name': 'Categories',
             'active': false,
-            'link': '',
+            'link': 'category.index',
             'icon': 'fa-solid fa-house',
             'children': []
         }
@@ -58,7 +58,21 @@ const mutations = {
     ACTIVE_ITEM(state, item) {
         state.navBars = state.navBars.map((navItem) => {
             if (item.id == navItem.id) {
-                navItem.active = !navItem.active;
+                // navItem.active = !navItem.active;
+                navItem.active = true
+            } else {
+                navItem.active = false
+            }
+
+            if (navItem.children.length > 0) {
+                navItem.children.map((child) => {
+                    if (child.id == item.id) {
+                        child.active = true
+                        navItem.active = true
+                    } else {
+                        child.active = false
+                    }
+                });
             }
             return navItem
         })

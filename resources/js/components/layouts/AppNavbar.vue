@@ -10,7 +10,8 @@
                 </a>
                 <ul class="dropdown-menu box-shadow" :class="{show:navItem.show}" v-if="(navItem.children.length > 0)">
                     <li v-for="item in navItem.children" :key="item.id">
-                        <a class="dropdown-item" href="#">{{ item.name }}</a>
+                        <!-- <a class="dropdown-item" href="#">{{ item.name }}</a> -->
+                        <router-link :to="{ name: item.href ? item.href : '' }"  class="dropdown-item">{{ item.name }}</router-link>
                     </li>
                 </ul>
             </li>
@@ -97,6 +98,7 @@ export default {
                         'name': 'Setting',
                         'icon': 'fa-solid fa-gear',
                         'line': false,
+                        'href': 'setting.user',
                     }, 
                     {
                         'id': uuid(),
@@ -133,6 +135,7 @@ export default {
         background-color: rgba(255, 255, 255, 0.95);
         border: 1px solid transparent;
         border-radius: 3px;
+        color: #5d596c;
     }
 
     .navbar-nav {

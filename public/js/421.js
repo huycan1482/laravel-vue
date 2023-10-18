@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunk=self.webpackChunk||[]).push([[421],{421:(e,r,n)=>{n.r(r),n.d(r,{default:()=>a});var u=n(821),l=(0,u._)("div",{class:"d-flex align-items-center"},[(0,u._)("h3",null,"Category Page"),(0,u._)("div")],-1);const t={},a=(0,n(744).Z)(t,[["render",function(e,r){var n=(0,u.up)("router-view");return(0,u.wg)(),(0,u.iD)(u.HY,null,[l,(0,u.Wm)(n)],64)}]])}}]);
+//# sourceMappingURL=421.js.map

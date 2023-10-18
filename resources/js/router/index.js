@@ -1,9 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router"
 
 import store from "../store/modules/auth"
-
 import AppLogin from "../components/auth/AppLogin.vue"
-
 import AppLayout from "../components/layouts/AppLayout.vue"
 
 import UserApp from "../components/users/UserApp.vue"
@@ -13,6 +11,7 @@ import UserEdit from "../components/users/UserEdit.vue"
 
 const routes = [
 	{ path: '/', component: AppLayout, meta: { requiresAuth: true }, children: [
+		{ path: 'setting/user', component: () => import ('../components/setting/UserSetting.vue'), name: 'setting.user' },
 		{ path: 'users', component: UserApp, children: [
 			// component: () => import('../views/FormInfo'),
 			{ path: '', component: UserList, name: 'user.index' },
@@ -24,6 +23,11 @@ const routes = [
 			// 	{ path: 'create', component: UserCreate, name: 'user.create' },
 			// 	{ path: 'edit/:id', component: UserEdit, name: 'user.edit', props: true },
 			// ]},
+		]},
+		{ path: 'category', component: () => import ('../components/category/CategoryApp.vue'), children: [
+			{ path: '', component: () => import ('../components/category/CategoryList.vue'), name: 'category.index' },
+			{ path: 'create', component: () => import ('../components/category/CategoryCreate.vue'), name: 'category.create' },
+			{ path: 'edit/:id', component: () => import ('../components/category/CategoryEdit.vue'), name: 'category.edit', props: true },
 		]},
 	]},
 	{ path: '/login', component: AppLogin, name: 'auth.login'},

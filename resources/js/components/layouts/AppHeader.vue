@@ -4,7 +4,7 @@
 
 <script>
 export default {
-    name: 'AppHelper'
+    name: 'AppHeader'
 }
 </script>
 

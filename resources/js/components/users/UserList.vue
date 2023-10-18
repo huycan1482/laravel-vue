@@ -35,21 +35,19 @@
 
 <script>
 import useUser from "../../composables/Model/user"
-import { onMounted, inject } from "vue"
+import { onMounted, inject, computed } from "vue"
 import commonFunc from "../../Common/common"
+import { useStore } from 'vuex'
+
 
 export default {
     setup () {
         const swal = inject('$swal')
         const { users, getUsers, destroyUser } = useUser()
         const { formatDate } = commonFunc()
+        const store = useStore()
 
         onMounted(getUsers)
-
-        // onMounted(() => {
-        //     console.log(" hihihihihihihih");
-        //      getUsers();
-        // })
 
         const deleteUser = async (id) => {
             await destroyUser(id);
@@ -70,11 +68,7 @@ export default {
                     deleteUser(id);
                 }
             })
-            
         }
-
-        
-
         return {
             users,
             formatDate,
@@ -85,5 +79,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-    
+    .content-body .table > :not(caption) > * > * {
+        color: #5d596c;
+    }
 </style>>

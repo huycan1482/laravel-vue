@@ -15,16 +15,19 @@
         <div class="app-menu">
             <ul class="list-menu">
                 <li class="menu-item" v-for="menu in navBars" :key="menu.id">
-                    <a href="#" class="" :class="[menu.active ? 'active' : '', ((menu.children.length) > 0) ? 'menu-toggle' : 'menu-link']" @click="ACTIVE_ITEM(menu)">
-                        <i class="" :class="menu.icon"></i>
-                        <div class="menu-text">{{ menu.name }}</div>
-                        <div :class="['icon-arrow icon-rotate', menu.active ? '' : 'right-90']" v-if="(menu.children.length) > 0">
-                            <i class="fa-solid fa-caret-down "></i>
-                        </div>
-                    </a>
+                    <!-- <a href="{{ menu.link ? menu.link : '' }}" class="" :class="[menu.active ? 'active' : '', ((menu.children.length) > 0) ? 'menu-toggle' : 'menu-link']" @click="ACTIVE_ITEM(menu)"> -->
+                    <div>
+                        <router-link :to="{ name:  menu.link ? menu.link : '' }" type="button" :class="[menu.active ? 'active' : '', ((menu.children.length) > 0) ? 'menu-toggle' : 'menu-link']" @click="ACTIVE_ITEM(menu)">
+                            <i class="" :class="menu.icon"></i>
+                            <div class="menu-text">{{ menu.name }}</div>
+                            <div :class="['icon-arrow icon-rotate', menu.active ? '' : 'right-90']" v-if="(menu.children.length) > 0">
+                                <i class="fa-solid fa-caret-down "></i>
+                            </div>
+                        </router-link>
+                    </div>
                     <ul :class="['menu-sub slide-toggle-y', menu.active ? 'show' : '']" v-if="(menu.children.length) > 0">
                         <li class="menu-item" v-for="menuItem in menu.children" :key="menuItem.id">
-                            <a href="#" class="menu-link" :class="{active:menuItem.active}">
+                            <a href="#" class="menu-link" :class="{active:menuItem.active}" @click="ACTIVE_ITEM(menuItem)">
                                 <i class="" :class="menuItem.icon"></i>
                                 <div class="menu-text">{{ menuItem.name }}</div>
                             </a>

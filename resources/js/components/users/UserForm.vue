@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { reactive, onMounted, ref } from "vue"
+import { reactive, onMounted } from "vue"
 import useUser from "../../composables/Model/user";
 
 export default {
@@ -54,7 +54,7 @@ export default {
 
         if (props.userId) {
             onMounted(() => {
-              getUser(props.userId)
+                getUser(props.userId)
             })
             form = user;
         }
@@ -75,6 +75,8 @@ export default {
 }
 </script>
 
-<style>
-
+<style lang="scss" scoped>
+    .content-body {
+        color: #5d596c;
+    }
 </style>
