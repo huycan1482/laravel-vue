@@ -43,9 +43,9 @@ class CategoryController extends Controller
             // $imageName = 'image'.'.jpg'.$extension;
 
             
-            $res = Storage::disk('public')->put('image.jpg', $imageData);
-
-
+            // $res = Storage::disk('public')->put('image.jpg', $imageData);
+            $res = Storage::disk('google')->put('image.jpg', $imageData);
+            // $res = Storage::cloud();
             // $imageName = time().'.'.$request->image->extension();
             // dd($imageName);
         }
