@@ -4,11 +4,19 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
+    private $categoryService;
+
+    public function __construct(CategoryService $categoryService)
+    {
+        $this->categoryService = $categoryService;
+    }
+
     public function getAll (Request $request)
     {
         $categories = Category::all();
@@ -23,28 +31,11 @@ class CategoryController extends Controller
 
     public function store (Request $request)
     {
-        // dd(asset('storage/'));
-        // dd($request->all());
+        // dd($request->image->getClientOriginalExtension());
         if ($request->has('image')) {
-            $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $request->input('image')));
-
-            // $image_64 = $request->input('image'); //your base64 encoded data
-
-            // $extension = explode('/', explode(':', substr($image_64, 0, strpos($image_64, ';')))[1])[1];   // .jpg .png .pdf
-
-            // $replace = substr($image_64, 0, strpos($image_64, ',')+1); 
-
-            // // find substring fro replace here eg: data:image/png;base64,
-
-            // $image = str_replace($replace, '', $image_64); 
-
-            // $image = str_replace(' ', '+', $image); 
-
-            // $imageName = 'image'.'.jpg'.$extension;
-
             
-            // $res = Storage::disk('public')->put('image.jpg', $imageData);
-            $res = Storage::disk('google')->put('image.jpg', $imageData);
+            // dd($request->image);
+            $res = Storage::disk('public')->putFileAs('uploads', $request->image, 'file-'.time().'-'.$request->image->getClientOriginalName());
             // $res = Storage::cloud();
             // $imageName = time().'.'.$request->image->extension();
             // dd($imageName);

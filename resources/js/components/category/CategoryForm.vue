@@ -15,7 +15,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="formFile" class="form-label">Image</label>
-                    <input class="form-control" type="file" @change="uploadFile">
+                    <input class="form-control" type="file" @change="uploadFile" ref="file">
                 </div>
                 <div class="mb-3 form-check">
                     <input class="form-check-input" type="checkbox" value="" v-model="form.active">
@@ -68,38 +68,53 @@ export default {
         }
 
         const saveCategory = async () => {
-            props.categoryId
-                ? await updateCategory(props.categoryId)
-                : await storeCategory({ ...form })
+            let formData = new FormData();
+            formData.append('name', form.name);
+            formData.append('image', form.image);
+            
+            console.log("DH data 1: ", formData.getAll('name'));
+            // formData.append('name', form.name);
+            if (props.categoryId) {
+                await updateCategory(props.categoryId)
+            } else {
+                await storeCategory(formData)
+            }   
+            // props.categoryId
+            //     ? await updateCategory(props.categoryId)
+            //     : await storeCategory({ ...form })
         }
 
+        // const uploadFile = (e) => {
+        //     let files = e.target.files || e.dataTransfer.files;
+        //     // Check if file is selected
+        //     if (e.target.files && e.target.files[0]) {
+        //         // Get uploaded file
+        //         const file = e.target.files[0],
+        //         // Get file size
+        //         fileSize = Math.round((file.size / 1024 / 1024) * 100) / 100,
+        //         // Get file extension
+        //         fileExtention = file.name.split(".").pop(),
+        //         // Get file name
+        //         fileName = file.name.split(".").shift(),
+        //         // Check if file is an image
+        //         isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtention);
+        //         // Print to console
+        //         console.log(fileSize, fileExtention, fileName, isImage);
+
+
+        //         let reader = new FileReader();
+        //         // let vm = this; 
+        //         reader.onload = (e) => {
+        //             form.image = e.target.result;
+        //         };
+        //         reader.readAsDataURL(files[0]);
+
+        //         console.log(form.image)
+        //     }
+        // }
+
         const uploadFile = (e) => {
-            let files = e.target.files || e.dataTransfer.files;
-            // Check if file is selected
-            if (e.target.files && e.target.files[0]) {
-                // Get uploaded file
-                const file = e.target.files[0],
-                // Get file size
-                fileSize = Math.round((file.size / 1024 / 1024) * 100) / 100,
-                // Get file extension
-                fileExtention = file.name.split(".").pop(),
-                // Get file name
-                fileName = file.name.split(".").shift(),
-                // Check if file is an image
-                isImage = ["jpg", "jpeg", "png", "gif"].includes(fileExtention);
-                // Print to console
-                console.log(fileSize, fileExtention, fileName, isImage);
-
-
-                let reader = new FileReader();
-                // let vm = this; 
-                reader.onload = (e) => {
-                    form.image = e.target.result;
-                };
-                reader.readAsDataURL(files[0]);
-
-                console.log(form.image)
-            }
+            form.image = e.target.files[0]
         }
 
         return {

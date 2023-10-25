@@ -23,10 +23,11 @@ export default function useCategory () {
     }
 
     const storeCategory = async (data) => {
+        console.log("DH data", data.getAll('name'))
         errorText.value = ''
         errors.value = ''
         try {
-            await axiosInstance.post('/api/category', data)
+            await axiosInstance.post('/api/category', data, { headers : {'Content-Type': 'multipart/form-data'} })
 
             const alert = {
                 title : 'Store success',
