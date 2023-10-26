@@ -26,8 +26,14 @@ class CreateRequest extends FormRequest
      */
     public function rules()
     {
+        if (!empty($this->category)) {
+
+        } else {
+
+        }
         return [
             'name' => 'required|string',
+            'image' => 'nullable'
         ];
     }
 

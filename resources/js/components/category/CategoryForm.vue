@@ -18,7 +18,7 @@
                     <input class="form-control" type="file" @change="uploadFile" ref="file">
                 </div>
                 <div class="mb-3 form-check">
-                    <input class="form-check-input" type="checkbox" value="" v-model="form.active">
+                    <input class="form-check-input" type="checkbox" v-model="form.active">
                     <label class="form-check-label" for="flexCheckDefault">
                         Active
                     </label>
@@ -55,33 +55,37 @@ export default {
             'id': null,
             'name': '',
             'image': '',
-            'active': false,
+            'active': 0,
         })
 
         const { category, errorText, errors, getCategory, storeCategory, updateCategory } = useCategory()
 
         if (props.categoryId) {
             onMounted(() => {
-                getUser(props.categoryId)
+                let res =  getCategory(props.categoryId)
+                await
+        
+                // form.id = category.id;
+                // form.name = category.image;
+                // form.active = !!category.active;
+
+                
             })
-            form = category;
+
+            form = category
+            console.log("DH form", form.active)
+            console.log("DH category", category.active)
         }
 
         const saveCategory = async () => {
             let formData = new FormData();
             formData.append('name', form.name);
             formData.append('image', form.image);
+            formData.append('active', form.active);
             
-            console.log("DH data 1: ", formData.getAll('name'));
-            // formData.append('name', form.name);
-            if (props.categoryId) {
-                await updateCategory(props.categoryId)
-            } else {
-                await storeCategory(formData)
-            }   
-            // props.categoryId
-            //     ? await updateCategory(props.categoryId)
-            //     : await storeCategory({ ...form })
+            props.categoryId
+                ? await updateCategory(props.categoryId)
+                : await storeCategory(formData)
         }
 
         // const uploadFile = (e) => {

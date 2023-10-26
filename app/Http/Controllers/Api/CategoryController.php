@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Category\CreateRequest;
 use App\Models\Category;
 use App\Services\CategoryService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -31,18 +33,27 @@ class CategoryController extends Controller
 
     public function store (Request $request)
     {
-        // dd($request->image->getClientOriginalExtension());
+        // dd($request->all(), intval($request->input('active') == 'true'));
+        $data = $request->only('name');
+
         if ($request->has('image')) {
-            
-            // dd($request->image);
-            $res = Storage::disk('public')->putFileAs('uploads', $request->image, 'file-'.time().'-'.$request->image->getClientOriginalName());
-            // $res = Storage::cloud();
-            // $imageName = time().'.'.$request->image->extension();
-            // dd($imageName);
+            $imageName = time().'-'.$request->image->getClientOriginalName();
+            $res = Storage::disk('public')->putFileAs('uploads/category', $request->image, $imageName);
+            $data['image'] = 'storage/uploads/category/'.$imageName;
         }
-        dd($res);
-        $user = Category::create($request->all());
-        return response()->json(['success' => true, 'data' => $user]);
+        
+        // $category->name = $data['name'];
+        // $category->slug = Str::slug($request->input('name'));
+        // $category->parent_id = 0;
+        // $category->is_active = 1;
+        // $category->save();
+
+        $data['slug'] = Str::slug($request->input('name'));
+        $data['parent_id'] = 0;
+        $data['active'] = intval($request->input('active'));
+        $category = Category::create($data);
+
+        return response()->json(['success' => true, 'data' => $category]);
     }
 
     public function update (Request $request, $id)

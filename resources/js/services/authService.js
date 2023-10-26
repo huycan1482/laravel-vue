@@ -10,7 +10,7 @@ const USER_NAME = 'user_name';
 
 const AuthService = {
     saveToken(token) {
-        cookies.set(TOKEN_KEY, token, "10MIN");
+        cookies.set(TOKEN_KEY, token, "1d");
     },
     
     getToken : cookies.get(TOKEN_KEY),

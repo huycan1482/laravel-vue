@@ -12,6 +12,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
+                    <th scope="col">Image</th>
                     <th scope="col">Created</th>
                     <th scope="col">Action</th>
                 </tr>
@@ -20,7 +21,10 @@
                 <tr v-for="(category, key) in categories" :key="category.id">
                     <th scope="row">{{ key + 1 }}</th>
                     <td>{{ category.name }}</td>
-                    <td>{{ `${formatDate(user.created_at).date} ${formatDate(category.created_at).time}` }}</td>
+                    <td>
+                        <img class="item-image" :src="category.image" alt="" width="50" height="50">
+                    </td>
+                    <td>{{ `${formatDate(category.created_at).date} ${formatDate(category.created_at).time}` }}</td>
                     <td>
                         <router-link :to="{ name: 'category.edit', params: { id: category.id } }" type="button" class="btn btn-primary me-2">Edit</router-link>
                         <div @click="confirmDeleteCategory(category.id)" class="btn btn-danger">Delete</div>
@@ -77,6 +81,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .item-image {
+
+    }
+
     .content-body .table > :not(caption) > * > * {
         color: #5d596c;
     }

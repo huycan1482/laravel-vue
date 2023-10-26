@@ -23,7 +23,8 @@ export default function useCategory () {
     }
 
     const storeCategory = async (data) => {
-        console.log("DH data", data.getAll('name'))
+        console.log("DH data", data.getAll('active'));
+
         errorText.value = ''
         errors.value = ''
         try {
