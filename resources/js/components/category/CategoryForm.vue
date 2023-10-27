@@ -15,6 +15,9 @@
                 </div>
                 <div class="mb-3">
                     <label for="formFile" class="form-label">Image</label>
+                    <div>
+                        <img width="50" height="50" :src="getImgURL(form.image)" alt="" v-if="form.image">
+                    </div>
                     <input class="form-control" type="file" @change="uploadFile" ref="file">
                 </div>
                 <div class="mb-3 form-check">
@@ -39,7 +42,7 @@
 </template>
 
 <script>
-import { reactive, onMounted } from "vue"
+import { reactive, ref, onMounted } from "vue"
 import useCategory from "../../composables/Model/category";
 
 export default {
@@ -51,41 +54,39 @@ export default {
         }
     },
     setup(props) {
-        let form = reactive({
+        let form = ref({
             'id': null,
             'name': '',
-            'image': '',
-            'active': 0,
+            'newImage': '',
+            'active': false,
         })
 
         const { category, errorText, errors, getCategory, storeCategory, updateCategory } = useCategory()
 
         if (props.categoryId) {
             onMounted(() => {
-                let res =  getCategory(props.categoryId)
-                await
-        
-                // form.id = category.id;
-                // form.name = category.image;
-                // form.active = !!category.active;
-
-                
+                getCategory(props.categoryId)
             })
-
             form = category
-            console.log("DH form", form.active)
-            console.log("DH category", category.active)
         }
 
         const saveCategory = async () => {
             let formData = new FormData();
-            formData.append('name', form.name);
-            formData.append('image', form.image);
-            formData.append('active', form.active);
+            formData.append('name', form.value.name ? form.value.name : '');
+            formData.append('image', form.value.newImage ? form.value.newImage : '');
+            formData.append('active', form.value.active ? form.value.active : '');
             
             props.categoryId
-                ? await updateCategory(props.categoryId)
+                ? await updateCategory(props.categoryId, formData)
                 : await storeCategory(formData)
+        }
+
+        const uploadFile = (e) => {
+            form.value.newImage = e.target.files[0]
+        }
+
+        const getImgURL = (img) => {
+            return window.location.origin + '/storage/' + img;
         }
 
         // const uploadFile = (e) => {
@@ -117,16 +118,13 @@ export default {
         //     }
         // }
 
-        const uploadFile = (e) => {
-            form.image = e.target.files[0]
-        }
-
         return {
             errors,
             errorText,
             form,
             saveCategory,
-            uploadFile
+            uploadFile,
+            getImgURL
         }
     },
 }

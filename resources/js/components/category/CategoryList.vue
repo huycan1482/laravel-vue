@@ -14,6 +14,7 @@
                     <th scope="col">Name</th>
                     <th scope="col">Image</th>
                     <th scope="col">Created</th>
+                    <th scope="col">Status</th>
                     <th scope="col">Action</th>
                 </tr>
             </thead>
@@ -22,9 +23,10 @@
                     <th scope="row">{{ key + 1 }}</th>
                     <td>{{ category.name }}</td>
                     <td>
-                        <img class="item-image" :src="category.image" alt="" width="50" height="50">
+                        <img class="item-image" :src="getImgURL(category.image)" alt="" width="50" height="50">
                     </td>
                     <td>{{ `${formatDate(category.created_at).date} ${formatDate(category.created_at).time}` }}</td>
+                    <td>{{ (category.active == true) ? 'Active' : 'Disable' }}</td>
                     <td>
                         <router-link :to="{ name: 'category.edit', params: { id: category.id } }" type="button" class="btn btn-primary me-2">Edit</router-link>
                         <div @click="confirmDeleteCategory(category.id)" class="btn btn-danger">Delete</div>
@@ -39,15 +41,12 @@
 import useCategory from "../../composables/Model/category"
 import { onMounted, inject, computed } from "vue"
 import commonFunc from "../../Common/common"
-import { useStore } from 'vuex'
-
 
 export default {
     setup () {
         const swal = inject('$swal')
         const { categories, getCategories, destroyCategory } = useCategory()
         const { formatDate } = commonFunc()
-        const store = useStore()
 
         onMounted(getCategories)
 
@@ -71,20 +70,22 @@ export default {
                 }
             })
         }
+
+        const getImgURL = (img) => {
+            return window.location.origin + '/storage/' + img;
+        }
+
         return {
             categories,
             formatDate,
             confirmDeleteCategory,
+            getImgURL
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-    .item-image {
-
-    }
-
     .content-body .table > :not(caption) > * > * {
         color: #5d596c;
     }

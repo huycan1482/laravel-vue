@@ -29,11 +29,12 @@ class CreateRequest extends FormRequest
         if (!empty($this->category)) {
 
         } else {
-
+            
         }
         return [
             'name' => 'required|string',
-            'image' => 'nullable'
+            'image' => 'nullable',
+            'active' => 'nullable'
         ];
     }
 
