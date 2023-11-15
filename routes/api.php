@@ -49,6 +49,12 @@ Route::group(['middleware' => 'auth.jwt'], function () {
         Route::put('/{category}', 'CategoryController@update');
         Route::delete('/{category}', 'CategoryController@destroy');
     });
+
+    Route::prefix('messages')->group(function () {
+        Route::get('/get-all', 'MessagesController@getAll');
+        Route::post('send-message', 'MessagesController@sendMessage');
+    });
+
 });
 
 
