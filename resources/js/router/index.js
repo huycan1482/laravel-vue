@@ -29,6 +29,9 @@ const routes = [
 			{ path: 'create', component: () => import ('../components/category/CategoryCreate.vue'), name: 'category.create' },
 			{ path: 'edit/:id', component: () => import ('../components/category/CategoryEdit.vue'), name: 'category.edit', props: true },
 		]},
+		{ path: 'message', component: () => import ('../components/message/MessageApp.vue'), children: [
+			{ path: '', component: () => import ('../components/message/MessageList.vue'), name: 'message.index' },
+		]},
 	]},
 	{ path: '/login', component: AppLogin, name: 'auth.login'},
 ]
