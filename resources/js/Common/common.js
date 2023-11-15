@@ -22,6 +22,10 @@ export default () => {
         };
     }  
 
+    const getImgURL = (img) => {
+        return window.location.origin + '/storage/' + img;
+    }
+
     const sweetAlert = (title, text, icon) => {
         swal.fire({
             title: title,
@@ -70,5 +74,6 @@ export default () => {
         sweetAlert,
         sweetAlertTopEnd,
         sweetAlertChangePage,
+        getImgURL
     }
 }

@@ -1,4 +1,4 @@
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import commonFunc from "../../Common/common"
 import apiCaller from '../../plugins/axios';
 
@@ -19,12 +19,10 @@ export default function useCategory () {
 
     const getCategory = async (id) => {
         let response = await axiosInstance.get('/api/category/'+id)
-        category.value = response.data.data
+        category.value = convertData(response.data.data);
     }
 
     const storeCategory = async (data) => {
-        console.log("DH data", data.getAll('active'));
-
         errorText.value = ''
         errors.value = ''
         try {
@@ -51,11 +49,14 @@ export default function useCategory () {
         }
     } 
 
-    const updateCategory = async (id) => {
+    const updateCategory = async (id, data) => {
         errorText.value = ''
         errors.value = ''
+
+        data.append('_method', 'PUT');
+        
         try {
-            await axiosInstance.put('/api/category/' + id, category.value)
+            await axiosInstance.post('/api/category/' + id, data, { headers : {'Content-Type': 'multipart/form-data'} })
 
             const alert = {
                 title : 'Update success',
@@ -90,6 +91,11 @@ export default function useCategory () {
             sweetAlert('Destroy fail', e.response.data.message ? e.response.data.message :  '', 'error')
             console.log(e)
         }
+    }
+
+    const convertData = (data) => {
+        data.active = !!data.active
+        return data
     }
 
     return {

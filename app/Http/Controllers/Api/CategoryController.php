@@ -31,15 +31,14 @@ class CategoryController extends Controller
         return response()->json(['success' => true, 'data' => $category]);
     }
 
-    public function store (Request $request)
+    public function store (CreateRequest $request)
     {
-        // dd($request->all(), intval($request->input('active') == 'true'));
         $data = $request->only('name');
 
         if ($request->has('image')) {
             $imageName = time().'-'.$request->image->getClientOriginalName();
             $res = Storage::disk('public')->putFileAs('uploads/category', $request->image, $imageName);
-            $data['image'] = 'storage/uploads/category/'.$imageName;
+            $data['image'] = 'uploads/category/'.$imageName;
         }
         
         // $category->name = $data['name'];
@@ -50,19 +49,34 @@ class CategoryController extends Controller
 
         $data['slug'] = Str::slug($request->input('name'));
         $data['parent_id'] = 0;
-        $data['active'] = intval($request->input('active'));
+        $data['active'] = intval(!!$request->input('active'));
+
         $category = Category::create($data);
 
         return response()->json(['success' => true, 'data' => $category]);
     }
 
-    public function update (Request $request, $id)
+    public function update (CreateRequest $request, $id)
     {
-        $user = Category::find($id);
-        if (!empty($user)) {
-            $user->update($request->all());
+        $data = $request->only('name');
+        $category = Category::find($id);
+        if (!empty($category)) {
+            if ($request->has('image')) {
+                $imageName = time().'-'.$request->image->getClientOriginalName();
+
+                $res = Storage::disk('public')->delete($category->image);
+                //Xoá file cũ
+                Storage::disk('public')->putFileAs('uploads/category', $request->image, $imageName);
+                //Thêm file mới
+                $data['image'] = 'uploads/category/'.$imageName;
+            }
+            $data['slug'] = Str::slug($request->input('name'));
+            $data['parent_id'] = 0;
+            $data['active'] = intval(!!$request->input('active'));
+            
+            $category->update($data);
         }
-        return response()->json(['success' => true, 'data' => $user]);
+        return response()->json(['success' => true, 'data' => $category]);
     }
 
     public function destroy ($id) 
