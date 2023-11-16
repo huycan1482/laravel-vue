@@ -69,11 +69,36 @@ export default () => {
         })
     }
 
+    const sweetLoading = () => {
+        swal.fire({
+            title: "Auto close alert!",
+            html: "I will close in <b></b> milliseconds.",
+            timer: 2000,
+            timerProgressBar: true,
+            // didOpen: () => {
+            //     swal.showLoading();
+            //     const timer = swal.getPopup().querySelector("b");
+            //     timerInterval = setInterval(() => {
+            //     timer.textContent = `${Swal.getTimerLeft()}`;
+            //     }, 100);
+            // },
+            // willClose: () => {
+            //     clearInterval(timerInterval);
+            // }
+        }).then((result) => {
+            /* Read more about handling dismissals below */
+            if (result.dismiss === Swal.DismissReason.timer) {
+              console.log("I was closed by the timer");
+            }
+        });
+    }
+
     return {
         formatDate,
         sweetAlert,
         sweetAlertTopEnd,
         sweetAlertChangePage,
-        getImgURL
+        getImgURL,
+        sweetLoading
     }
 }
