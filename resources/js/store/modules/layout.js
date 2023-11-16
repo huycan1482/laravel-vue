@@ -42,6 +42,14 @@ const state = {
             'link': 'category.index',
             'icon': 'fa-solid fa-house',
             'children': []
+        },
+        {
+            'id': uuid(),
+            'name': 'Messages',
+            'active': false,
+            'link': 'message.index',
+            'icon': 'fa-solid fa-house',
+            'children': []
         }
     ]
 }
