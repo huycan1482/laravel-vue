@@ -32,12 +32,13 @@ class MessageEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel('myself-chanel');
+        // return new PrivateChannel('myself-chanel');
+        return ['chat-message'];
     }
 
-    // public function broadcastWith ()
-    // {
-    //     //return data
-    //     return ['message' => $this->message];
-    // }
+    public function broadcastWith ()
+    {
+        //return data
+        return ['message' => $this->message];
+    }
 }

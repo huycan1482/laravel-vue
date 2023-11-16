@@ -8,14 +8,10 @@
 <script>
 
 export default {
-    setup () {
-        
-    },
     mounted() {
-        window.Echo.channel('chat')
-        .listen('MessageEvent', (e) => {
-            console.log('New message received:', e.message);
-            // this.messages.push(e.message);
+        window.Echo.channel('chat-message')
+            .listen('MessageEvent', (e) => {
+                console.log('New message received:', e.message);
         });
   }
 }

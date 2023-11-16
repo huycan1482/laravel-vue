@@ -17,8 +17,8 @@ class MessageController extends Controller
 
     public function sendMessage (Request $request)
     {
-        $message = $request->input('message', 'Hey');
-        event(new MessageEvent($message));
+        $message = $request->input('message', 'Hey 123');
+        $e = event(new MessageEvent($message));
         return response()->json(['success' => true, 'data' => $message]);
     }
 }

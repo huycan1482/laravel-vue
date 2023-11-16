@@ -29,7 +29,10 @@ const routes = [
 			{ path: 'create', component: () => import ('../components/category/CategoryCreate.vue'), name: 'category.create' },
 			{ path: 'edit/:id', component: () => import ('../components/category/CategoryEdit.vue'), name: 'category.edit', props: true },
 		]},
-		{ path: 'message', component: () => import ('../components/message/MessageApp.vue'), children: [
+		{ path: 'chats', component: () => import ('../components/chat/ChatApp.vue'), children: [
+			{ path: '', component: () => import ('../components/chat/ChatList.vue'), name: 'chat.index' },
+		]},
+		{ path: 'messages', component: () => import ('../components/message/MessageApp.vue'), children: [
 			{ path: '', component: () => import ('../components/message/MessageList.vue'), name: 'message.index' },
 		]},
 	]},
@@ -45,7 +48,6 @@ route.beforeEach((to, from, next) => {
     if (to.matched.some(route => route.meta.requiresAuth)) {
 		// Kiểm tra xem người dùng đã đăng nhập hay chưa
 		if (store.state.auth.isAuthenticated) {
-			
 		  	next(); // Cho phép truy cập
 		} else {
 			// Chuyển hướng đến trang đăng nhập

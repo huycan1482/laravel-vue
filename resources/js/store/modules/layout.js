@@ -45,6 +45,14 @@ const state = {
         },
         {
             'id': uuid(),
+            'name': 'Chats',
+            'active': false,
+            'link': 'chat.index',
+            'icon': 'fa-solid fa-house',
+            'children': []
+        },
+        {
+            'id': uuid(),
             'name': 'Messages',
             'active': false,
             'link': 'message.index',
