@@ -18,6 +18,23 @@ class UserController extends Controller
         return response()->json(['success' => true, 'data' => $users]);
     }
 
+    public function search (Request $request)
+    {
+        // dd($request->all());
+
+        $users = User::paginate(1);
+
+        $data = [
+            'data' => $users->items(),
+            'totalCount' => $users->count(),
+            'currentCount' => $users->perPage(),
+            'page' => $users->currentPage(),
+            'lastPage' => $users->lastPage(),
+        ];
+
+        return response()->json(['success' => true, 'data' => $data]);
+    }
+
     public function show ($id) 
     {
         $user = User::find($id);

@@ -13,12 +13,13 @@ export default function useUser () {
     const { sweetAlert, sweetAlertChangePage } = commonFunc()
 
     const getUsers = async () => {
-        let response = await axiosInstance.get('/api/users/getAll')
-        users.value = response.data.data
+        let response = await axiosInstance.get('/api/users/search')
+        users.value = response.data.data.data
+        console.log(response.data.data)
     }
 
     const getUser = async (id) => {
-        let response = await axiosInstance.get('/api/users/'+id)
+        let response = await axiosInstance.get('/api/users/show/'+id)
         user.value = response.data.data
     }
 

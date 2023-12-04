@@ -31,16 +31,21 @@
             </tbody>
         </table>
     </div>
+    <NavigationBar/>
 </template>
 
 <script>
+import NavigationBar from "./../layouts/NavigationBar.vue"
+
 import useUser from "../../composables/Model/user"
 import { onMounted, inject, computed } from "vue"
 import commonFunc from "../../Common/common"
 import { useStore } from 'vuex'
 
-
 export default {
+    components: {
+        NavigationBar,
+    },
     setup () {
         const swal = inject('$swal')
         const { users, getUsers, destroyUser } = useUser()

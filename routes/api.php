@@ -36,10 +36,11 @@ Route::group(['middleware' => 'auth.jwt'], function () {
 
     Route::prefix('users')->group(function () {
         Route::get('/getAll', 'UserController@getAll');
-        Route::get('/{user}', 'UserController@show');
+        Route::get('/show/{user}', 'UserController@show');
         Route::post('/', 'UserController@store');
         Route::put('/{user}', 'UserController@update');
         Route::delete('/{user}', 'UserController@destroy');
+        Route::get('/search', 'UserController@search');
     });
 
     Route::prefix('category')->group(function () {
@@ -50,6 +51,9 @@ Route::group(['middleware' => 'auth.jwt'], function () {
         Route::delete('/{category}', 'CategoryController@destroy');
     });
 
+    Route::prefix('chats')->group(function () {
+        Route::get('/create', 'ChatController@create');
+    });
     
 
 });

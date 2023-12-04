@@ -1,6 +1,7 @@
 <template>
     <div class="content-header d-flex">
         <h5>Chat List</h5>
+        <router-link :to="{ name: 'category.create' }" type="button" class="badge bg-primary cursor">+ Add Category</router-link>
     </div>
 
     <div class="content-body">

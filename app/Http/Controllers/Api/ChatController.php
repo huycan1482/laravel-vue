@@ -19,4 +19,9 @@ class ChatController extends Controller
     {
         
     }
+
+    public function create (Request $request)
+    {
+
+    }
 }

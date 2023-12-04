@@ -18,7 +18,7 @@ class CreateTableChat extends Migration
             $table->string('name', 255);
             $table->bigInteger('');
             $table->integer('status');
-            $table->timestamps();
+            $table->timestamps(); 
         });
 
 
