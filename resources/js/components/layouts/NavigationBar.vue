@@ -1,7 +1,7 @@
 <template>
     <div class="d-flex justify-content-center align-items-center flex-wrap">
         <div class="d-flex flex-wrap page-paginator">
-            <a href="javascript:void(0)" class="page-item" v-for="page in pages" :key="page.page" :class="[(page.active) ? 'active' : '', (page.disabled) ? 'disabled' : '']">
+            <a href="javascript:void(0)" class="page-item" v-for="page in pages" :key="page" :class="[(page.active) ? 'active' : '', (page.disabled) ? 'disabled' : '']">
                 <i class="" v-if="(page.type)" :class="page.content"></i>
                 {{ (page.type == 0) ? page.content : '' }}
             </a>
@@ -23,24 +23,16 @@
 </template>
 
 <script>
-import { reactive, ref, onUpdated, onMounted } from 'vue';
+import { ref, watchEffect } from 'vue';
 export default {
     props: ['currentPage', 'lastPage'],
     data(props) {
-        // const pages = {
-        //     currentPage: 2,
-        //     lastPage: 8,
-        //     totalCount: 28,
-        //     currentCount: 10,
-        //     data: [],
-        // }
-
         const currentPage = ref(props.currentPage)
         const lastPage = ref(props.lastPage)
         const pages = []
 
-
         const renderPagination = (currentPage, lastPage) => {
+            pages.length = 0
             if (currentPage == 1) {
                 pages.push({
                     type: 1,
@@ -118,20 +110,20 @@ export default {
                     type: 1,
                     disabled: 1,
                     active: false,
-                    content: `fa-solid fa-ellipsis`,
+                    content: `fa-solid fa-right`,
                     page: ``
                 });
             }
-
-            // $('.loading-paginate').html(html);
-
         }
 
-        renderPagination(currentPage.value, lastPage.value)
-        // onMounted(() => {
-        //     console.log("DH run")
-        //     renderPagination(test.currentPage, test.lastPage)
-        // })
+
+        watchEffect(() => {
+            currentPage.value = props.currentPage;
+            lastPage.value = props.lastPage;
+            if (!isNaN(parseInt(currentPage.value)) && !isNaN(parseInt(lastPage.value))) {
+                renderPagination(currentPage.value, lastPage.value)
+            }
+        });
         
         return {
             pages

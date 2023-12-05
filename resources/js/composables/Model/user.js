@@ -9,8 +9,7 @@ export default function useUser () {
     const user = ref([])
     const errors = ref([])
     const errorText = ref('')
-    const paginator = ref({})
-    const currentPage = ref('{}')
+    const currentPage = ref('')
     const lastPage = ref('')
 
     const { sweetAlert, sweetAlertChangePage } = commonFunc()
@@ -18,21 +17,8 @@ export default function useUser () {
     const getUsers = async () => {
         let response = await axiosInstance.get('/api/users/search')
         users.value = response.data.data.data
-        // paginator.value = [
-        //     {'lastPage': response.data.data.lastPage},
-        //     {'currentPage': response.data.data.currentPage},
-        //     {'currentCount': response.data.data.currentCount},
-        //     {'totalCount': response.data.data.totalCount},
-        // ]
-        paginator.value.lastPage = response.data.data.lastPage
-        paginator.value.currentPage = response.data.data.page
-        paginator.value.currentCount = response.data.data.currentCount
-        paginator.value.totalCount = response.data.data.totalCount
-
-
-        currentPage.value = response.data.data.currentPage
+        currentPage.value = response.data.data.page
         lastPage.value = response.data.data.lastPage
-        // console.log(response.data.data)
     }
 
     const getUser = async (id) => {
@@ -135,7 +121,6 @@ export default function useUser () {
         storeUser,
         updateUser,
         destroyUser,
-        paginator,
         currentPage,
         lastPage,
     }

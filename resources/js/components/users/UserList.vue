@@ -31,7 +31,7 @@
             </tbody>
         </table>
     </div>
-    <NavigationBar :currentPage="currentPage" :lastPage="lastPage"/>
+    <NavigationBar :currentPage="currentPage ? currentPage : 0" :lastPage="lastPage ? lastPage : 0"/>
 </template>
 
 <script>
@@ -48,19 +48,9 @@ export default {
     },
     setup () {
         const swal = inject('$swal')
-        const { users, getUsers, destroyUser, paginator, currentPage, lastPage } = useUser()
+        const { users, getUsers, destroyUser, currentPage, lastPage } = useUser()
         const { formatDate } = commonFunc()
         const store = useStore()
-        // const paginator = {
-        //     currentPage: 2,
-        //     lastPage: 8,
-        //     totalCount: 28,
-        //     currentCount: 10,
-        //     data: [],
-        // }
-
-        console.log("DH currentPage:", currentPage);
-        console.log("DH lastPage:", lastPage);
 
         onMounted(getUsers)
 
@@ -88,7 +78,6 @@ export default {
             users,
             formatDate,
             confirmDeleteUser,
-            paginator,
             currentPage,
             lastPage,
         }
