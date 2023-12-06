@@ -31,6 +31,7 @@ const routes = [
 		]},
 		{ path: 'chats', component: () => import ('../components/chat/ChatApp.vue'), children: [
 			{ path: '', component: () => import ('../components/chat/ChatList.vue'), name: 'chat.index' },
+			// { path: 'create', component: () => import ('../components/chat/ChatCreate.vue'), name: 'chat.create' },
 		]},
 		{ path: 'messages', component: () => import ('../components/message/MessageApp.vue'), children: [
 			{ path: '', component: () => import ('../components/message/MessageList.vue'), name: 'message.index' },

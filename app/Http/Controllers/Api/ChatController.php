@@ -15,6 +15,21 @@ class ChatController extends Controller
         return response(['success' => true, 'chats' => $chats]);
     }
 
+    public function search (Request $request)
+    {
+        $chats = Chat::paginate(1);
+
+        $data = [
+            'data' => $chats->items(),
+            'totalCount' => $chats->count(),
+            'currentCount' => $chats->perPage(),
+            'page' => $chats->currentPage(),
+            'lastPage' => $chats->lastPage(),
+        ];
+
+        return response()->json(['success' => true, 'data' => $data]);
+    }
+
     public function getUserChat (Request $request)
     {
         

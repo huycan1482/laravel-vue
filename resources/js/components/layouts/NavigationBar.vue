@@ -1,7 +1,10 @@
 <template>
     <div class="d-flex justify-content-center align-items-center flex-wrap">
         <div class="d-flex flex-wrap page-paginator">
-            <a href="javascript:void(0)" class="page-item" v-for="page in pages" :key="page" :class="[(page.active) ? 'active' : '', (page.disabled) ? 'disabled' : '']">
+            <a href="javascript:void(0)" class="page-item" v-for="page in pages" 
+            :key="page" 
+            :class="[(page.active) ? 'active' : '', (page.disabled) ? 'disabled' : '']"
+            @click="changePage(page.page)">
                 <i class="" v-if="(page.type)" :class="page.content"></i>
                 {{ (page.type == 0) ? page.content : '' }}
             </a>
@@ -39,7 +42,7 @@ export default {
                     active: 0,
                     disabled: 1,
                     content: `fa-solid fa-angle-left`,
-                    page: '',
+                    page: 0,
                 })
             } else {
                 pages.push({
@@ -58,7 +61,7 @@ export default {
                         disabled: 1,
                         active: false,
                         content: `fa-solid fa-ellipsis`,
-                        page: ''
+                        page: 0
                     })
                 }
 
@@ -92,7 +95,7 @@ export default {
                         disabled: 1,
                         active: false,
                         content: `fa-solid fa-ellipsis`,
-                        page: ``
+                        page: 0
                     });
                 }
             }
@@ -110,12 +113,17 @@ export default {
                     type: 1,
                     disabled: 1,
                     active: false,
-                    content: `fa-solid fa-right`,
-                    page: ``
+                    content: `fa-solid fa-angle-right`,
+                    page: 0
                 });
             }
         }
 
+        const changePage = (page) => {
+            if (page != 0) {
+                this.$emit('changePage', page)
+            }
+        }
 
         watchEffect(() => {
             currentPage.value = props.currentPage;
@@ -126,7 +134,8 @@ export default {
         });
         
         return {
-            pages
+            pages,
+            changePage
         }
     }
 }

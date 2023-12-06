@@ -31,14 +31,14 @@
             </tbody>
         </table>
     </div>
-    <NavigationBar :currentPage="currentPage ? currentPage : 0" :lastPage="lastPage ? lastPage : 0"/>
+    <NavigationBar @changePage="changePage" :currentPage="currentPage ? currentPage : 0" :lastPage="lastPage ? lastPage : 0"/>
 </template>
 
 <script>
 import NavigationBar from "./../layouts/NavigationBar.vue"
 
 import useUser from "../../composables/Model/user"
-import { onMounted, inject, computed } from "vue"
+import { onMounted, inject, computed, watch } from "vue"
 import commonFunc from "../../Common/common"
 import { useStore } from 'vuex'
 
@@ -48,11 +48,13 @@ export default {
     },
     setup () {
         const swal = inject('$swal')
-        const { users, getUsers, destroyUser, currentPage, lastPage } = useUser()
-        const { formatDate } = commonFunc()
-        const store = useStore()
+        const { users, getUsers, destroyUser, currentPage, lastPage, conditions } = useUser()
+        const { formatDate, getParamsUrl } = commonFunc()
 
-        onMounted(getUsers)
+        onMounted( () => {
+            getParamsUrl(conditions)
+            getUsers()
+        })
 
         const deleteUser = async (id) => {
             await destroyUser(id);
@@ -74,12 +76,19 @@ export default {
                 }
             })
         }
+
+        const changePage = (page) => {
+            conditions.page = page
+            getUsers()
+        }
+
         return {
             users,
             formatDate,
             confirmDeleteUser,
             currentPage,
             lastPage,
+            changePage
         }
     }
 }

@@ -11,11 +11,13 @@ export default function useUser () {
     const errorText = ref('')
     const currentPage = ref('')
     const lastPage = ref('')
+    const conditions = {}
 
-    const { sweetAlert, sweetAlertChangePage } = commonFunc()
+    const { sweetAlert, sweetAlertChangePage, setParamsUrl } = commonFunc()
 
     const getUsers = async () => {
-        let response = await axiosInstance.get('/api/users/search')
+        let response = await axiosInstance.get('/api/users/search', {params: conditions})
+        setParamsUrl(conditions)
         users.value = response.data.data.data
         currentPage.value = response.data.data.page
         lastPage.value = response.data.data.lastPage
@@ -111,6 +113,10 @@ export default function useUser () {
         }
     }
 
+    const updateUrl = () => {
+
+    }
+    
     return {
         users,
         user,
@@ -123,5 +129,6 @@ export default function useUser () {
         destroyUser,
         currentPage,
         lastPage,
+        conditions
     }
 }

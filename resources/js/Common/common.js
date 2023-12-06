@@ -26,6 +26,37 @@ export default () => {
         return window.location.origin + '/storage/' + img;
     }
 
+    const setParamsUrl = (params) => {
+        let conditions = ''
+
+        if (Object.keys(params).length !== 0) {
+            conditions = '?'
+            for (var key in params) {
+                conditions += `${(conditions != '?') ? '&' : ''}${key}=${params[key]}`
+            }
+        }
+
+        let newUrl = window.location.protocol + "//" + window.location.host + window.location.pathname + conditions;
+        window.history.pushState({path:newUrl}, "", newUrl);
+
+        return params
+    }
+
+    const getParamsUrl = (conditions) => {
+        let url = window.location.search;
+        let queryString = url ? url.split('?')[1] : window.location.search.slice(1);
+        let queryArr = queryString.split('&');
+
+        if(url !== '') {
+            queryArr.forEach((value, key) => {
+                let arr = value.split('=');
+                conditions[arr[0]] = arr[1]
+            })
+        }
+
+        return conditions
+    }
+
     const sweetAlert = (title, text, icon) => {
         swal.fire({
             title: title,
@@ -99,6 +130,8 @@ export default () => {
         sweetAlertTopEnd,
         sweetAlertChangePage,
         getImgURL,
-        sweetLoading
+        sweetLoading,
+        setParamsUrl,
+        getParamsUrl,
     }
 }

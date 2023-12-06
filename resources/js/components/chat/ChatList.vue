@@ -1,7 +1,9 @@
 <template>
     <div class="content-header d-flex">
         <h5>Chat List</h5>
-        <router-link :to="{ name: 'category.create' }" type="button" class="badge bg-primary cursor">+ Add Category</router-link>
+        <div class="ms-2">
+            <!-- <router-link :to="{ name: 'chat.create' }" type="button" class="badge bg-primary cursor">+ Add Category</router-link> -->
+        </div>
     </div>
 
     <div class="content-body">
@@ -24,14 +26,27 @@
         </table>
     </div>
     
+    <ChatCreate />
 </template>
 
 <script>
 import { ref, reactive, methods } from 'vue'
 import commonFunc from "../../Common/common"
+import ChatCreate from "./ChatCreate.vue"
+
 
 export default {
+    components: {
+        ChatCreate,
+    },
     data () {
+        return {
+            
+        }
+    },
+    setup() {
+        const { getImgURL } = commonFunc()
+
         return {
             chats: [
                 {
@@ -49,13 +64,8 @@ export default {
                     name: "Chat 3",
                     images: "image",
                 }
-            ]
-        }
-    },
-    setup() {
-        const { getImgURL } = commonFunc()
+            ],
 
-        return {
             getImgURL
         }
     }
