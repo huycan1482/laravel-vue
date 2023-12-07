@@ -39,7 +39,7 @@ import NavigationBar from "./../layouts/NavigationBar.vue"
 
 import useUser from "../../composables/Model/user"
 import { onMounted, inject, computed, watch } from "vue"
-import commonFunc from "../../Common/common"
+import commonFunc from "../../common/common"
 import { useStore } from 'vuex'
 
 export default {

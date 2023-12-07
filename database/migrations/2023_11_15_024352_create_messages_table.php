@@ -15,8 +15,10 @@ class CreateMessagesTable extends Migration
     {
         Schema::table('messages', function (Blueprint $table) {
             $table->id();
-            $table->text('content');
             $table->bigInteger('user_id');
+            $table->bigInteger('chat_id');
+            $table->text('content');
+            $table->string('image', 255);
             $table->integer('status');
             $table->timestamps();
         });

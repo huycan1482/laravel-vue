@@ -13,7 +13,6 @@ const routes = [
 	{ path: '/', component: AppLayout, meta: { requiresAuth: true }, children: [
 		{ path: 'setting/user', component: () => import ('../components/setting/UserSetting.vue'), name: 'setting.user' },
 		{ path: 'users', component: UserApp, children: [
-			// component: () => import('../views/FormInfo'),
 			{ path: '', component: UserList, name: 'user.index' },
 			{ path: 'create', component: UserCreate, name: 'user.create' },
 			{ path: 'edit/:id', component: UserEdit, name: 'user.edit', props: true },
@@ -31,6 +30,7 @@ const routes = [
 		]},
 		{ path: 'chats', component: () => import ('../components/chat/ChatApp.vue'), children: [
 			{ path: '', component: () => import ('../components/chat/ChatList.vue'), name: 'chat.index' },
+			{ path: 'chat-room/:id', component: () => import ('../components/chat/ChatRoom.vue'), name: 'chat.chat-room' },
 			// { path: 'create', component: () => import ('../components/chat/ChatCreate.vue'), name: 'chat.create' },
 		]},
 		{ path: 'messages', component: () => import ('../components/message/MessageApp.vue'), children: [

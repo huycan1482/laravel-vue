@@ -52,7 +52,12 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     });
 
     Route::prefix('chats')->group(function () {
-        Route::get('/create', 'ChatController@create');
+        // Route::get('/getAll', 'ChatController@getAll');
+        Route::get('/chat-room/{chat}', 'ChatController@getChatRoom');
+        Route::post('/', 'ChatController@store');
+        // Route::put('/{chat}', 'ChatController@update');
+        // Route::delete('/{chat}', 'ChatController@destroy');
+        Route::get('/search', 'ChatController@search');
     });
     
 

@@ -1,5 +1,5 @@
 require('./bootstrap');
-import { createApp } from "vue";
+import { createApp, Vue } from "vue";
 import router from "./router"; 
 import App from "./App.vue";
 
@@ -16,6 +16,10 @@ import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 import VueSweetalert2 from 'vue-sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
+
+// import { BootstrapVue, IconsPlugin } from 'bootstrap-vue'
+// import 'bootstrap/dist/css/bootstrap.css'
+// import 'bootstrap-vue/dist/bootstrap-vue.css'
 
 // import VueToastify from 'vue3-toastify';
 // import 'vue3-toastify/dist/index.css';
@@ -36,6 +40,8 @@ const app = createApp(App)
 app.component("font-awesome-icon", FontAwesomeIcon)
 app.use(router)
 app.use(VueSweetalert2)
+// app.use(BootstrapVue)
+// app.use(IconsPlugin)
 app.use(store)
 // app.use(VueToastify)
 app.mount('#app')

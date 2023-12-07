@@ -1,5 +1,5 @@
 import { ref, reactive } from 'vue'
-import commonFunc from "../../Common/common"
+import commonFunc from "../../common/common"
 import apiCaller from '../../plugins/axios';
 
 export default function useCategory () {

@@ -1,7 +1,8 @@
 <template>
-    <div class="content-header d-flex">
-        <h5>Chat List</h5>
+    <div class="content-header d-flex align-items-center">
+        <h5 class="mb-0">Chat List</h5>
         <div class="ms-2">
+            <ChatCreate :storeChat="storeChat"/>
             <!-- <router-link :to="{ name: 'chat.create' }" type="button" class="badge bg-primary cursor">+ Add Category</router-link> -->
         </div>
     </div>
@@ -18,55 +19,48 @@
                     </td>
                     <!-- <td>{{ `${formatDate(category.created_at).date} ${formatDate(category.created_at).time}` }}</td> -->
                     <td class="text-end">
-                        <!-- <router-link :to="{ name: 'category.edit', params: { id: category.id } }" type="button" class="btn btn-primary me-2">Edit</router-link> -->
-                        <div class="btn btn-primary">Join</div>
+                        <router-link :to="{ name: 'chat.chat-room', params: { id: chat.id } }" type="button" class="btn btn-primary me-2">Join</router-link>
+                        <!-- <div class="btn btn-primary">Join</div> -->
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-    
-    <ChatCreate />
+    <NavigationBar @changePage="changePage" :currentPage="currentPage ? currentPage : 0" :lastPage="lastPage ? lastPage : 0" v-if="lastPage != 1"/>
 </template>
 
 <script>
-import { ref, reactive, methods } from 'vue'
-import commonFunc from "../../Common/common"
+import { onMounted, watch, watchEffect } from 'vue'
+import commonFunc from "../../common/common"
 import ChatCreate from "./ChatCreate.vue"
-
+import useChat from "./../../composables/Model/chat"
+import NavigationBar from "./../layouts/NavigationBar.vue"
 
 export default {
     components: {
         ChatCreate,
-    },
-    data () {
-        return {
-            
-        }
+        NavigationBar
     },
     setup() {
         const { getImgURL } = commonFunc()
 
-        return {
-            chats: [
-                {
-                    id: 1,
-                    name: "Chat 1",
-                    images: "image",
-                },
-                {
-                    id: 2,
-                    name: "Chat 2",
-                    images: "image",
-                },
-                {
-                    id: 3,
-                    name: "Chat 3",
-                    images: "image",
-                }
-            ],
+        const { chats, getChats, storeChat, currentPage, lastPage, conditions } = useChat()
 
-            getImgURL
+        onMounted(getChats)
+
+        const changePage = (page) => {
+            conditions.page = page
+            getChats()
+        }
+
+        return {
+            chats,
+            getImgURL,
+            currentPage,
+            lastPage,
+            conditions,
+            changePage,
+            storeChat,
         }
     }
 }

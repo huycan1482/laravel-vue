@@ -163,11 +163,14 @@ export default {
 
             &.disabled {
                 cursor: not-allowed;
+                background-color: #f8f8f8;
+                opacity: 0.5;
             }
 
             &.active {
                 color: #fff;
                 background-color: #685dd8;
+                opacity: 1;
             }
         }   
     }

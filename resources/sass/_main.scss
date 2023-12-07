@@ -46,6 +46,19 @@ a {
     box-shadow: 0 0.125rem 0.25rem rgba(165, 163, 174, 0.3);
 }
 
+.avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border: 1px solid transparent;
+    border-radius: 100%;
+}
+
 .red-text {
     color: #dc3545;
+}
+
+.grey-text {
+    color: #a5a3ae;
 }

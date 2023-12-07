@@ -1,104 +1,81 @@
 <template>
-    <button type="button"  class="btn btn-primary"  @click="openModal">
-        Launch demo modal
-    </button>
+  <!-- Button trigger modal -->
+<span class="badge bg-primary cursor" data-bs-toggle="modal" data-bs-target="#chatCreateModal">
+  Add
+</span>
 
 <!-- Modal -->
-    <div class="modal-mask">
-      <div class="modal-wrapper">
-        <div class="modal-container">
-
-          <div class="modal-header">
-            <slot name="header">
-              default header
-            </slot>
-          </div>  
-
-          <div class="modal-body">
-            <slot name="body">
-              default body
-            </slot>
+  <div class="modal fade" id="chatCreateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Add Chat</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div>
+            <form @submit.prevent="saveChat" class="">
+                <div class="mb-3">
+                    <label for="inputName" class="form-label">Name</label>
+                    <input type="text" class="form-control" id="inputName" v-model="form.name">
+                    <!-- <span class="red-text" v-if="errors.name"></span> -->
+                </div>
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Image</label>
+                    <input class="form-control" type="file" @change="uploadFile" ref="file">
+                </div>
+                <!-- <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                </div> -->
+            </form>
           </div>
-
-          <div class="modal-footer">
-            <slot name="footer">
-              default footer
-              <button class="modal-default-button" @click="$emit('close')">
-                OK
-              </button>
-            </slot>
-          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" @click="saveChat">Save</button>
         </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
+import {ref} from "vue"
 
 export default {
-    setup () {
+    props: ['storeChat'],
+    setup (props) {
+      let form = ref({
+        'id': null,
+        'name': '',
+        'image': '',
+      })
 
-        const openModal = () => {
-            console.log("DH run")
-        }
+      const storeData = props.storeChat
 
-        return {
-            openModal 
-        }
+      const saveChat = () => {
+
+        let formData = new FormData();
+        formData.append('name', form.value.name ? form.value.name : '');
+        formData.append('image', form.value.newImage ? form.value.newImage : '');
+
+        storeData(formData)
+      }
+
+      const uploadFile = (e) => {
+        form.value.newImage = e.target.files[0]
+      }
+
+      return {
+        form,
+        saveChat,
+        uploadFile, 
+      }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-    .modal-mask {
-        position: fixed;
-        z-index: 9998;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: table;
-        transition: opacity 0.3s ease;
-    }
-
-    .modal-wrapper {
-        display: table-cell;
-        vertical-align: middle;
-    }
-
-    .modal-container {
-        width: 300px;
-        margin: 0px auto;
-        padding: 20px 30px;
-        background-color: #fff;
-        border-radius: 2px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-        transition: all 0.3s ease;
-        font-family: Helvetica, Arial, sans-serif;
-    }
-
-    .modal-header h3 {
-        margin-top: 0;
-        color: #42b983;
-    }
-
-    .modal-body {
-        margin: 20px 0;
-    }
-
-    .modal-default-button {
-        float: right;
-    }
-
-    .modal-enter-from, .modal-leave-to {
-        opacity: 0;
-    }
-
-    .modal-enter-active .modal-container,
-    .modal-leave-active .modal-container {
-        -webkit-transform: scale(1.1);
-        transform: scale(1.1);
-    }
 
 </style>>

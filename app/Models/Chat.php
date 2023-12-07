@@ -12,6 +12,6 @@ class Chat extends Model
     protected $table = "chats";
 
     protected $fillable = [
-        'name', 'images', 'status'
+        'name', 'image', 'status'
     ];
 }
