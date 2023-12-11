@@ -29,6 +29,7 @@ const state = {
 const getters = {
     isAuthenticated: state => state.auth.isAuthenticated,
     authToken: state => state.auth.token,
+    authInfo: state => state.userLogin,
 }
 
 const actions = {

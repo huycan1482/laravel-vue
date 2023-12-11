@@ -15,10 +15,16 @@ class MessageController extends Controller
         return response()->json(['success' => true, 'data' => $messages]);
     }
 
+    public function getChatMessages (Request $request)
+    {
+        dd('getChatMessages');
+    }
+
     public function sendMessage (Request $request)
     {
-        $message = $request->input('message', 'Hey 123');
-        $e = event(new MessageEvent($message));
-        return response()->json(['success' => true, 'data' => $message]);
+        dd($request->all());
+        // $message = $request->input('message', 'Hey 123');
+        // $e = event(new MessageEvent($message));
+        // return response()->json(['success' => true, 'data' => $message]);
     }
 }

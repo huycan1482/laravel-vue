@@ -24,42 +24,126 @@
                 </div>
             </div>
             <div class="chat-content">
-                <div class="chat-message right">
+                <div class="chat-message" v-for="message in messages" :key="message.id" :class="(message.id == authInfo.id) ? 'right' : 'left'">
                     <div class="sender-img">
                         <div class="avatar">
-                            <img src="https://bathanh.com.vn/wp-content/uploads/2017/08/default_avatar.png" alt="">
+                            <img :src="message.avatar" alt="">
                         </div>
                     </div>
                     <div class="content-detail">
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
-                    </div>
-                </div>
-
-                <div class="chat-message left">
-                    <div class="sender-img">
-                        <div class="avatar">
-                            <img src="https://bathanh.com.vn/wp-content/uploads/2017/08/default_avatar.png" alt="">
+                        <div class="content-message">
+                            <p v-if="message.content">{{ message.content }}</p>
                         </div>
-                    </div>
-                    <div class="content-detail">
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.
-
-
-                        </p>
+                        <!-- <p v-if="message.image">Lorem ipsum dolor sit amet consectetur adipisicing elit.</p> -->
+                        <div class="content-info grey-text">
+                            <span>Đã gửi lúc </span>
+                            <span>{{ `  ${formatDate(message.created_at).time} ${formatDate(message.created_at).date}` }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="chat-footer">
+                <div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Dropdown button
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="#">Action</a>
+    <a class="dropdown-item" href="#">Another action</a>
+    <a class="dropdown-item" href="#">Something else here</a>
+  </div>
+</div>
 
+                <form class="form-send-message" @submit.prevent="saveMessage">
+                    <input type="text" class="form-control me-2" id="" placeholder="" v-model="form.content">
+                    <button type="button" class="btn btn-primary" @click="saveMessage">
+                        <i class="fa-solid fa-location-arrow"></i>
+                    </button>
+                </form>
             </div>
         </div>
     </div>
+    
 </template>
 
 <script>
-export default {
+import { ref, reactive } from 'vue'
+import { mapGetters, useStore } from 'vuex'
+import common from '../../common/common'
+import useMessage from '../../composables/Model/message'
 
-}
+export default {
+    // computed: {
+    //     ...mapGetters([
+    //         'authInfo'
+    //     ])
+    // },
+    data() {
+        return {
+            messages: [
+            {
+                id: 1,
+                created_at: '2023-07-07 02:30:30',
+                content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+                image: '',
+                user_id: 1,
+                avatar: 'https://bathanh.com.vn/wp-content/uploads/2017/08/default_avatar.png'
+            },
+            {
+                id: 4,
+                created_at: '2023-07-07 02:30:30',
+                content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+                image: '',
+                user_id: 2,
+                avatar: 'https://bathanh.com.vn/wp-content/uploads/2017/08/default_avatar.png'
+            },
+            {
+                id: 3,
+                created_at: '2023-07-07 02:30:30',
+                content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+                image: '',
+                user_id: 1,
+                avatar: 'https://bathanh.com.vn/wp-content/uploads/2017/08/default_avatar.png'
+            },
+            {
+                id: 2,
+                created_at: '2023-07-07 02:30:30',
+                content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.',
+                image: '',
+                user_id: 1,
+                avatar: 'https://bathanh.com.vn/wp-content/uploads/2017/08/default_avatar.png'
+            }
+        ]}
+    },
+    setup() {
+        let form = ref({
+            'chat_id': '',
+            'content': '',
+        })
+
+        const store = useStore()
+        const authInfo = store.getters.authInfo
+        const { formatDate } = common()
+
+        const { sendMessage } = useMessage()
+
+        const saveMessage = () => {
+            let formData = new FormData();
+            formData.append('content', form.value.content ? form.value.content : '');
+            formData.append('user_id', authInfo.id);
+            formData.append('chat_id', form.value.chat_id ? form.value.chat_id : 1);
+
+            sendMessage(formData)
+        }
+
+        return {
+            form,
+            authInfo,
+            formatDate,
+            saveMessage,
+        }
+    }
+} 
 </script>
 
 <style lang="scss" scoped>
@@ -77,6 +161,10 @@ export default {
         width: 70%;
         margin-left: 8px;
         padding: 16px 0;
+        height: 700px;
+        overflow: hidden;
+        padding-bottom: 50px;
+        color: rgb(93, 89, 108);
     }
 
     .chat-header {
@@ -142,6 +230,9 @@ export default {
 
     .chat-content {
         padding: 0px 16px 8px;
+        height: 80%;
+        overflow-y: scroll;
+        border-bottom: 1px solid #ecf0f1;
 
         .chat-message {
             display: flex;
@@ -149,16 +240,26 @@ export default {
 
             &.right {
                 flex-direction: row-reverse;
-                .content-detail {
+                .content-message {
                     background: #685dd8;
                     color: #ffff;
+                    margin-left: 52px;
+                }
+
+                .content-info {
+                    justify-content: flex-end;
                 }
             }
 
             &.left {
                 flex-direction: row;
-                .content-detail {
+                .content-message {
                     background: #f8f8f8;
+                    margin-right: 52px;
+                }
+
+                .content-info {
+                    justify-content: flex-start;
                 }
             }
 
@@ -173,11 +274,26 @@ export default {
                 }
             }
 
-            .content-detail {
+            .content-message {
                 padding: 12px 16px;
                 border: 1px solid transparent;
                 border-radius: 5px;
             }
+
+            .content-info {
+                margin: 5px 0 0 5px;
+                font-size: 13px;
+                display: flex;
+                align-items: center;
+            }
         }
     }
-</style>>
+
+    .chat-footer {
+        .form-send-message {
+            display: flex;
+            align-items: center;
+            padding: 20px 23px;
+        }
+    }
+</style>

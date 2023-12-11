@@ -60,7 +60,10 @@ Route::group(['middleware' => 'auth.jwt'], function () {
         Route::get('/search', 'ChatController@search');
     });
     
-
+    Route::prefix('messages')->group(function () {
+        Route::get('/get-chat-messages', 'MessageController@getChatMessages');
+        Route::post('/send-message', 'MessageController@sendMessage');
+    });
 });
 
 Route::prefix('messages')->group(function () {
