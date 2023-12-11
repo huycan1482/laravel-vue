@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Chat;
+use App\Services\Model\ChatService;
 use App\Services\TelegramService;
 use Google\Service\CloudSourceRepositories\Repo;
 use Google\Service\DataprocMetastore\TelemetryConfig;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -51,7 +53,8 @@ class ChatController extends Controller
 
         // $data['slug'] = Str::slug($request->input('name'));
         // $data['parent_id'] = 0;
-        $data['status'] = 1;
+        $data['status'] = ChatService::$STATUS_ACTIVE;
+        $data['user_create'] = Auth::user()->id;
 
         $chat = Chat::create($data);
 

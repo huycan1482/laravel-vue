@@ -66,8 +66,8 @@ Route::group(['middleware' => 'auth.jwt'], function () {
     });
 });
 
-Route::prefix('messages')->group(function () {
-    Route::get('/get-all', 'MessageController@getAll');
-    Route::get('/send-message', 'MessageController@sendMessage');
-});
+// Route::prefix('messages')->group(function () {
+//     Route::get('/get-all', 'MessageController@getAll');
+//     Route::get('/send-message', 'MessageController@sendMessage');
+// });
 

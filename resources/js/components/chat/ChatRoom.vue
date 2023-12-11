@@ -43,17 +43,6 @@
                 </div>
             </div>
             <div class="chat-footer">
-                <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Dropdown button
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="#">Action</a>
-    <a class="dropdown-item" href="#">Another action</a>
-    <a class="dropdown-item" href="#">Something else here</a>
-  </div>
-</div>
-
                 <form class="form-send-message" @submit.prevent="saveMessage">
                     <input type="text" class="form-control me-2" id="" placeholder="" v-model="form.content">
                     <button type="button" class="btn btn-primary" @click="saveMessage">
@@ -67,7 +56,7 @@
 </template>
 
 <script>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import { mapGetters, useStore } from 'vuex'
 import common from '../../common/common'
 import useMessage from '../../composables/Model/message'
@@ -78,6 +67,12 @@ export default {
     //         'authInfo'
     //     ])
     // },
+    props : {
+        chatId: {
+            required :true,
+            type: String
+        }
+    },
     data() {
         return {
             messages: [
@@ -115,7 +110,7 @@ export default {
             }
         ]}
     },
-    setup() {
+    setup(props) {
         let form = ref({
             'chat_id': '',
             'content': '',
@@ -124,14 +119,19 @@ export default {
         const store = useStore()
         const authInfo = store.getters.authInfo
         const { formatDate } = common()
+        const chatId = props.chatId
 
-        const { sendMessage } = useMessage()
+        const { sendMessage, getChatMessages } = useMessage()
+
+        onMounted(() => {
+            getChatMessages({ chat_id: chatId })
+        })
 
         const saveMessage = () => {
             let formData = new FormData();
             formData.append('content', form.value.content ? form.value.content : '');
-            formData.append('user_id', authInfo.id);
-            formData.append('chat_id', form.value.chat_id ? form.value.chat_id : 1);
+            formData.append('sender_id', authInfo.id);
+            formData.append('chat_id', chatId);
 
             sendMessage(formData)
         }
@@ -161,7 +161,7 @@ export default {
         width: 70%;
         margin-left: 8px;
         padding: 16px 0;
-        height: 700px;
+        height: 550px;
         overflow: hidden;
         padding-bottom: 50px;
         color: rgb(93, 89, 108);

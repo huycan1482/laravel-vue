@@ -30,11 +30,11 @@ const routes = [
 		]},
 		{ path: 'chats', component: () => import ('../components/chat/ChatApp.vue'), children: [
 			{ path: '', component: () => import ('../components/chat/ChatList.vue'), name: 'chat.index' },
-			{ path: 'chat-room/:id', component: () => import ('../components/chat/ChatRoom.vue'), name: 'chat.chat-room' },
+			{ path: 'chat-room/:chatId', component: () => import ('../components/chat/ChatRoom.vue'), name: 'chat.chat-room', props: true  },
 			// { path: 'create', component: () => import ('../components/chat/ChatCreate.vue'), name: 'chat.create' },
 		]},
 		{ path: 'messages', component: () => import ('../components/message/MessageApp.vue'), children: [
-			{ path: '', component: () => import ('../components/message/MessageList.vue'), name: 'message.index' },
+			{ path: '', component: () => import ('../components/message/MessageList.vue'), name: 'message.index'},
 		]},
 	]},
 	{ path: '/login', component: AppLogin, name: 'auth.login'},

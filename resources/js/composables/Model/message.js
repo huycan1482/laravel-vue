@@ -24,11 +24,21 @@ export default function useUser () {
         }
     } 
 
+    const getChatMessages = async (data) => {
+        try {
+            let response = await axiosInstance.get('/api/messages/get-chat-messages', {params : data})
+            messages.value = response.data.data
+        } catch (e) {
+            console.log("GetChatMessages error", e)
+        }
+    }
+
     const addNewItem = (data) => {
         chats.value.push(data)
     }
     
     return {
         sendMessage,
+        getChatMessages
     }
 }

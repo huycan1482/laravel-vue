@@ -16,8 +16,26 @@ class CreateTableChat extends Migration
         Schema::create('chats', function (Blueprint $table) {
             $table->id();
             $table->string('name', 255);
-            $table->bigInteger('');
+            $table->string('image', 255);
+            $table->bigInteger('user_create')->unsigned();
             $table->integer('status');
+            $table->timestamps(); 
+        });
+
+        Schema::create('messages', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('sender_id')->unsigned();
+            $table->bigInteger('chat_id')->unsigned();
+            $table->text('content');
+            $table->string('image', 255);
+            $table->integer('status');
+            $table->timestamps(); 
+        });
+
+        Schema::create('user_chat', function (Blueprint $table) {
+            $table->id();
+            $table->bigInteger('user_id')->unsigned();
+            $table->bigInteger('chat_id')->unsigned();
             $table->timestamps(); 
         });
 

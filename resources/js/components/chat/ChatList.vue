@@ -19,7 +19,7 @@
                     </td>
                     <!-- <td>{{ `${formatDate(category.created_at).date} ${formatDate(category.created_at).time}` }}</td> -->
                     <td class="text-end">
-                        <router-link :to="{ name: 'chat.chat-room', params: { id: chat.id } }" type="button" class="btn btn-primary me-2">Join</router-link>
+                        <router-link :to="{ name: 'chat.chat-room', params: { chatId: chat.id } }" type="button" class="btn btn-primary me-2">Join</router-link>
                         <!-- <div class="btn btn-primary">Join</div> -->
                     </td>
                 </tr>

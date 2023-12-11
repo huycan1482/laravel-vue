@@ -12,6 +12,6 @@ class Message extends Model
     protected $table = "messages";
 
     protected $fillable = [
-        'sender_id', 'chat_id', 'content', 'image', 'active', 
+        'sender_id', 'chat_id', 'content', 'image', 'status', 
     ];
 }
