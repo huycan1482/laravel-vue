@@ -38,13 +38,13 @@ class MessageEvent implements ShouldBroadcast
 
         TelegramService::sendMsg("DH room.".$this->message->chat_id);
 
-        return new PrivateChannel('room.'.$this->message->chat_id);
+        return new PrivateChannel('App.Models.User.'.$this->message->chat_id);
 
     }
 
-    public function broadcastWith ()
-    {
-        //return data
-        return ['message' => $this->message];
-    }
+    // public function broadcastWith ()
+    // {
+    //     //return data
+    //     return ['message' => $this->message];
+    // }
 }

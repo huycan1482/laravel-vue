@@ -13,12 +13,15 @@ use Illuminate\Support\Facades\Broadcast;
 |
 */
 Broadcast::channel('App.Models.User.{id}', function ($user, $id) {
-    dd(1);
+    // dd(1);
     // return (int) $user->id === (int) $id;
     return true;
 });
 
-Broadcast::channel('room.{id}', function ($user, $id) {
-    dd(2);
+Broadcast::channel('privateroom.{id}', function ($user, $id) {
     return true; // user có thể join vào bất kì chatroom nào 
 });
+
+// Broadcast::channel('*', function ($user, $id) {
+//     return true;
+// });

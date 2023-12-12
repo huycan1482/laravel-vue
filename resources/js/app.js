@@ -34,11 +34,15 @@ window.Echo = new Echo({
     key: process.env.MIX_PUSHER_APP_KEY,
     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
     encrypted: true,
-    // auth: {
-    //     headers: {
-    //         Authorization: 'Bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sYXJhdmVsLXZ1ZS5jb21cL2FwaVwvYXV0aFwvbG9naW4iLCJpYXQiOjE3MDIyODA5OTIsImV4cCI6MTcwMjM2NzM5MiwibmJmIjoxNzAyMjgwOTkyLCJqdGkiOiIweFd6VzBDMElKMHc3eEVJIiwic3ViIjoxLCJwcnYiOiIyM2JkNWM4OTQ5ZjYwMGFkYjM5ZTcwMWM0MDA4NzJkYjdhNTk3NmY3In0.R17HBlsIbygfE20XStX7SePt5el7CsQxCJOm51rTVQI'
+    appId: '1708835',
+    // disableStats: true,
+    // auth:{
+    //     headers:{
+    //      'Accept':'application/json',
+    //      'Content-Type':'application/json',
+    //      }
     //     },
-    // },
+    //    authEndpoint: 'http://laravel-vue.com/broadcasting/auth'
 });
 
 const app = createApp(App)

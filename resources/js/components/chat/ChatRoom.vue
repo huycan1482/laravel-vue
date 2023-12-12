@@ -60,7 +60,6 @@ import { ref, reactive, onMounted } from 'vue'
 import { mapGetters, useStore } from 'vuex'
 import common from '../../common/common'
 import useMessage from '../../composables/Model/message'
-
 export default {
     props : {
         chatId: {
@@ -73,6 +72,12 @@ export default {
     //     //     .listen('MessageEvent', (e) => {
     //     //         console.log('New message received:', e.message);
     //     // });
+    // },
+    // created() {
+    //     window.Echo.private('room.2')
+    //         .listen('Test', (e) => {
+    //             console.log('test successful ' + e)
+    //     })
     // },
     setup(props) {
         let form = ref({
@@ -90,12 +95,12 @@ export default {
         onMounted(() => {
             getChatMessages({ chat_id: chatId })
 
-            let roomName = 'room.'+chatId   
+            let roomName = 'App.Models.User.'+chatId   
             console.log("DH room name ", roomName)
-            window.Echo.private(roomName)
-                .notification((notification) => {
-                    console.log("DH err ", notification, notification.type)
-                })
+            Echo.private(roomName)
+                // .notification((notification) => {
+                //     console.log("DH err ", notification, notification.type)
+                // })
             // window.Echo.channel('chat-message')
                 .listen('MessageEvent', (e) => {
                     console.log('New message received:', e.message);
