@@ -2,6 +2,7 @@
 
 namespace App\Events;
 
+use App\Services\TelegramService;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -33,7 +34,12 @@ class MessageEvent implements ShouldBroadcast
     public function broadcastOn()
     {
         // return new PrivateChannel('myself-chanel');
-        return ['chat-message'];
+        // return ['chat-message'];
+
+        TelegramService::sendMsg("DH room.".$this->message->chat_id);
+
+        return new PrivateChannel('room.'.$this->message->chat_id);
+
     }
 
     public function broadcastWith ()

@@ -6,7 +6,7 @@ export default () => {
     const swal = inject('$swal')
     const router = useRouter()
 
-    const formatDate = (string, timeZone = 7, symbol = '/') => {
+    const formatDate = (string, timeZone = 0, symbol = '/') => {
         if (string != '' && string != 0) {
             let date = new Date(string);
             date.setHours(date.getHours() - timeZone);

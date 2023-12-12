@@ -24,10 +24,10 @@
                 </div>
             </div>
             <div class="chat-content">
-                <div class="chat-message" v-for="message in messages" :key="message.id" :class="(message.id == authInfo.id) ? 'right' : 'left'">
+                <div class="chat-message" v-for="message in messages" :key="message.id" :class="(message.sender_id == authInfo.id) ? 'right' : 'left'">
                     <div class="sender-img">
                         <div class="avatar">
-                            <img :src="message.avatar" alt="">
+                            <img :src="(message.avatar) ? message.avatar : getImgDefault()" alt="">
                         </div>
                     </div>
                     <div class="content-detail">
@@ -62,54 +62,18 @@ import common from '../../common/common'
 import useMessage from '../../composables/Model/message'
 
 export default {
-    // computed: {
-    //     ...mapGetters([
-    //         'authInfo'
-    //     ])
-    // },
     props : {
         chatId: {
             required :true,
             type: String
         }
     },
-    data() {
-        return {
-            messages: [
-            {
-                id: 1,
-                created_at: '2023-07-07 02:30:30',
-                content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-                image: '',
-                user_id: 1,
-                avatar: 'https://bathanh.com.vn/wp-content/uploads/2017/08/default_avatar.png'
-            },
-            {
-                id: 4,
-                created_at: '2023-07-07 02:30:30',
-                content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-                image: '',
-                user_id: 2,
-                avatar: 'https://bathanh.com.vn/wp-content/uploads/2017/08/default_avatar.png'
-            },
-            {
-                id: 3,
-                created_at: '2023-07-07 02:30:30',
-                content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-                image: '',
-                user_id: 1,
-                avatar: 'https://bathanh.com.vn/wp-content/uploads/2017/08/default_avatar.png'
-            },
-            {
-                id: 2,
-                created_at: '2023-07-07 02:30:30',
-                content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.Lorem ipsum dolor sit amet consectetur adipisicing elit.',
-                image: '',
-                user_id: 1,
-                avatar: 'https://bathanh.com.vn/wp-content/uploads/2017/08/default_avatar.png'
-            }
-        ]}
-    },
+    // mounted() {
+    //     // window.Echo.private('')
+    //     //     .listen('MessageEvent', (e) => {
+    //     //         console.log('New message received:', e.message);
+    //     // });
+    // },
     setup(props) {
         let form = ref({
             'chat_id': '',
@@ -121,10 +85,21 @@ export default {
         const { formatDate } = common()
         const chatId = props.chatId
 
-        const { sendMessage, getChatMessages } = useMessage()
+        const { sendMessage, getChatMessages, messages } = useMessage()
 
         onMounted(() => {
             getChatMessages({ chat_id: chatId })
+
+            let roomName = 'room.'+chatId   
+            console.log("DH room name ", roomName)
+            window.Echo.private(roomName)
+                .notification((notification) => {
+                    console.log("DH err ", notification, notification.type)
+                })
+            // window.Echo.channel('chat-message')
+                .listen('MessageEvent', (e) => {
+                    console.log('New message received:', e.message);
+            });
         })
 
         const saveMessage = () => {
@@ -134,6 +109,12 @@ export default {
             formData.append('chat_id', chatId);
 
             sendMessage(formData)
+
+            form.value.content = '';
+        }
+
+        const getImgDefault = () => {
+            return 'https://bathanh.com.vn/wp-content/uploads/2017/08/default_avatar.png'
         }
 
         return {
@@ -141,6 +122,8 @@ export default {
             authInfo,
             formatDate,
             saveMessage,
+            messages,
+            getImgDefault,
         }
     }
 } 

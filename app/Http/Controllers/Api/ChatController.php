@@ -47,7 +47,7 @@ class ChatController extends Controller
 
         if ($request->has('image')) {
             $imageName = time().'-'.$request->image->getClientOriginalName();
-            // $res = Storage::disk('public')->putFileAs('uploads/chat', $request->image, $imageName);
+            $res = Storage::disk('public')->putFileAs('uploads/chat', $request->image, $imageName);
             $data['image'] = 'uploads/chat/'.$imageName;
         }
 

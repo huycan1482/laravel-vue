@@ -2,7 +2,10 @@
 
 namespace App\Services\Model;
 
+use App\Events\MessageEvent;
 use App\Models\Message;
+use App\Services\TelegramService;
+// use App\Events\MessagePosted;
 
 class MessageService
 {
@@ -29,7 +32,7 @@ class MessageService
 
     public function create ($data)
     {
-        $res = $this->model->create($data);
+        $res = $this->model::create($data);
         $this->resetModel();
         return $res;
     }
@@ -38,7 +41,7 @@ class MessageService
     {
         if (empty($chatId)) return [];
         $perPage = 10;
-        $messages = $this->model::where('chat_id', $chatId)->orderBy('id', 'DESC')->paginate($perPage);
+        $messages = $this->model::where('chat_id', $chatId)->orderBy('id', 'ASC')->paginate($perPage);
 
         $data = [
             'data' => $messages->items(),
@@ -51,10 +54,21 @@ class MessageService
         return $data;
     }
 
-    public function sendPusher () 
+    public function sendMessage($data)
     {
-        // $message = $request->input('message', 'Hey 123');
-        // $e = event(new MessageEvent($message));
+        $res = $this->create($data);
+        $this->sendPusher($res);
+        return $res;
+    }
+
+    public function sendPusher ($data) 
+    {
+        
+        $e = event(new MessageEvent($data));
+
+        // $e = broadcast(new MessageEvent($data))->toOthers();
+        TelegramService::sendMsg("Send Pusher".json_encode($e));
+        // return $message;
         // return response()->json(['success' => true, 'data' => $message]);
     }
 }

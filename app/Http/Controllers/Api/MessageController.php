@@ -37,7 +37,8 @@ class MessageController extends Controller
         $data['image'] = MessageService::$STATUS_FAIL;
         $data['status'] = MessageService::$STATUS_ACTIVE;
 
-        $message = $this->messageService->create($data);
+        $message = $this->messageService->sendMessage($data);
+       
 
         return response(['success' => true, 'data' => $message]);
     }
