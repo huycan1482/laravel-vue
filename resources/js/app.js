@@ -24,26 +24,6 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 // import VueToastify from 'vue3-toastify';
 // import 'vue3-toastify/dist/index.css';
 
-import Echo from 'laravel-echo';
-import Pusher from 'pusher-js';
-
-window.Pusher = Pusher;
-
-window.Echo = new Echo({
-    broadcaster: 'pusher',
-    key: process.env.MIX_PUSHER_APP_KEY,
-    cluster: process.env.MIX_PUSHER_APP_CLUSTER,
-    encrypted: true,
-    appId: '1708835',
-    // disableStats: true,
-    // auth:{
-    //     headers:{
-    //      'Accept':'application/json',
-    //      'Content-Type':'application/json',
-    //      }
-    //     },
-    //    authEndpoint: 'http://laravel-vue.com/broadcasting/auth'
-});
 
 const app = createApp(App)
 app.component("font-awesome-icon", FontAwesomeIcon)

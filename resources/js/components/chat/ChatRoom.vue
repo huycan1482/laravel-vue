@@ -95,14 +95,14 @@ export default {
         onMounted(() => {
             getChatMessages({ chat_id: chatId })
 
-            let roomName = 'App.Models.User.'+chatId   
+            let roomName = 'chat.'+chatId   
             console.log("DH room name ", roomName)
             Echo.private(roomName)
                 // .notification((notification) => {
                 //     console.log("DH err ", notification, notification.type)
                 // })
             // window.Echo.channel('chat-message')
-                .listen('MessageEvent', (e) => {
+                .listen('SendPrivateMessage', (e) => {
                     console.log('New message received:', e.message);
             });
         })

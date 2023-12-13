@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthTrue
@@ -18,6 +19,11 @@ class AuthTrue
      */
     public function handle(Request $request, Closure $next)
     {
+        // dd(auth('api'), 123);
+        // Auth::loginUsingId(1, TRUE);
+        // dd(Auth::user());
+
+        dd(Auth::guard('api')->user(), Auth::guard('web')->user());
         return $next($request);
     }
 }

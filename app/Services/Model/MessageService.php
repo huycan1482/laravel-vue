@@ -3,6 +3,7 @@
 namespace App\Services\Model;
 
 use App\Events\MessageEvent;
+use App\Events\SendPrivateMessage;
 use App\Models\Message;
 use App\Services\TelegramService;
 // use App\Events\MessagePosted;
@@ -63,11 +64,9 @@ class MessageService
 
     public function sendPusher ($data) 
     {
-        
-        $e = event(new MessageEvent($data));
-
+        $e = event(new SendPrivateMessage($data));
         // $e = broadcast(new MessageEvent($data))->toOthers();
-        TelegramService::sendMsg("Send Pusher".json_encode($e));
+        // TelegramService::sendMsg("Send Pusher".json_encode($e));
         // return $message;
         // return response()->json(['success' => true, 'data' => $message]);
     }

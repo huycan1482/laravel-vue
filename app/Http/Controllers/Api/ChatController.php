@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Chat;
+use App\Models\UserChat;
 use App\Services\Model\ChatService;
 use App\Services\TelegramService;
 use Google\Service\CloudSourceRepositories\Repo;
@@ -15,6 +16,11 @@ use Illuminate\Support\Str;
 
 class ChatController extends Controller
 {
+    public function __construct()
+    {
+        
+    }
+
     public function getAll()
     {
         $chats = Chat::all();
@@ -57,6 +63,13 @@ class ChatController extends Controller
         $data['user_create'] = Auth::user()->id;
 
         $chat = Chat::create($data);
+
+        $data = [
+            'user_id' => Auth::user()->id,
+            'chat_id' => $chat->id,
+        ];
+
+        UserChat::create($data);
 
         return response()->json(['success' => true, 'data' => $chat]);
     }

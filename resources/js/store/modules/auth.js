@@ -28,7 +28,7 @@ const state = {
 
 const getters = {
     isAuthenticated: state => state.auth.isAuthenticated,
-    authToken: state => state.auth.token,
+    authToken: state => state.auth.accessToken,
     authInfo: state => state.userLogin,
 }
 

@@ -14,9 +14,12 @@ class AuthController extends Controller
     public function login()
     {
         $credentials = request(['email', 'password']);
+
+    //    dd(123, Auth::guard('api')->user());
         if (! $accessToken = auth('api')->attempt($credentials)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+        // dd(auth('api')->attempt($credentials), Auth::guard('api')->user(), Auth::guard('web')->user());
 
         $refreshToken = $this->createRefreshToken(auth('api')->user()->id, 30);
 
@@ -84,8 +87,4 @@ class AuthController extends Controller
         return ($refreshToken);
     }
 
-    public function test ()
-    {
-        dd(123);
-    }
 }

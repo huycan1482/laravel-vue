@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
 class ApiMiddleWare
@@ -20,6 +21,7 @@ class ApiMiddleWare
     {
         try {
             $user = JWTAuth::parseToken()->authenticate();
+            // dd(Auth::guard('api')->user());
         } catch (Exception $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
                 return response()->json(['message' => 'Token is Invalid'], 403);

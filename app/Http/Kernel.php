@@ -65,7 +65,7 @@ class Kernel extends HttpKernel
         // 'jwt.auth' => \App\Http\Middleware\VerifyJWTToken::class,
         // 'auth.api' => \App\Http\Middleware\VerifyJWTToken::class,
         'auth.jwt' => \App\Http\Middleware\ApiMiddleWare::class,
-        'auth.true' => \App\Http\Middleware\AuthTrue::class
+        'auth.accept' => \App\Http\Middleware\AuthTrue::class
 
     ];
 }

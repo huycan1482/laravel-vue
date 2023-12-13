@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/callback/test', function () {
+// Route::get('/callback/test', function () {
 
-});
+// });
 
 Route::view('/{any}', 'welcome')->where('any', '^(?!api).*$');
