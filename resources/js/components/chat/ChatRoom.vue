@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive, onMounted, watch } from 'vue'
 import { mapGetters, useStore } from 'vuex'
 import common from '../../common/common'
 import useMessage from '../../composables/Model/message'
@@ -92,21 +92,6 @@ export default {
 
         const { sendMessage, getChatMessages, messages } = useMessage()
 
-        onMounted(() => {
-            getChatMessages({ chat_id: chatId })
-
-            let roomName = 'chat.'+chatId   
-            console.log("DH room name ", roomName)
-            Echo.private(roomName)
-                // .notification((notification) => {
-                //     console.log("DH err ", notification, notification.type)
-                // })
-            // window.Echo.channel('chat-message')
-                .listen('SendPrivateMessage', (e) => {
-                    console.log('New message received:', e.message);
-            });
-        })
-
         const saveMessage = () => {
             let formData = new FormData();
             formData.append('content', form.value.content ? form.value.content : '');
@@ -116,11 +101,52 @@ export default {
             sendMessage(formData)
 
             form.value.content = '';
+
+            // scrollToBottom()
         }
 
         const getImgDefault = () => {
             return 'https://bathanh.com.vn/wp-content/uploads/2017/08/default_avatar.png'
         }
+
+        const scrollToBottom = () => {
+            var element = document.querySelector('.chat-content');
+            element.scrollTop = element.scrollHeight;
+        }
+
+        onMounted(() => {
+            getChatMessages({ chat_id: chatId })
+
+            let roomName = 'chat.' + chatId   
+            console.log("DH room name ", roomName)
+            
+            Echo.private(roomName)
+                .listen('SendPrivateMessage', (e) => {
+                    console.log('New message received:', e.message);
+                })
+
+            Echo.join(roomName)
+                .joining((user) => { // gọi khi có user mới join vào phòng
+                    // this.usersOnline.push(user)
+                    console.log("New user ",user)
+                })
+                .leaving((user) => { // gọi khi có user rời phòng
+                    // const index = this.usersOnline.findIndex(item => item.id === user.id)
+                    // if (index > -1) {
+                    //     this.usersOnline.splice(index, 1)
+                    // }
+                    console.log("User leaving ",user)
+                })
+                .here((users) => { // gọi ngay thời điểm ta join vào phòng, trả về tổng số user hiện tại có trong phòng (cả ta)
+                    // this.usersOnline = users
+                    console.log("Total user ",users)
+                })
+        })
+
+
+        watch(messages, (newVal, oldVal) => {
+            scrollToBottom()
+        }, { deep: true })
 
         return {
             form,
@@ -129,6 +155,7 @@ export default {
             saveMessage,
             messages,
             getImgDefault,
+            scrollToBottom,
         }
     }
 } 
@@ -217,6 +244,8 @@ export default {
     }
 
     .chat-content {
+        display: flex;
+        flex-direction: column-reverse;
         padding: 0px 16px 8px;
         height: 80%;
         overflow-y: scroll;

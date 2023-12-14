@@ -41,8 +41,8 @@ class MessageService
     public function getChatMessages ($chatId)
     {
         if (empty($chatId)) return [];
-        $perPage = 10;
-        $messages = $this->model::where('chat_id', $chatId)->orderBy('id', 'ASC')->paginate($perPage);
+        $perPage = 5;
+        $messages = $this->model::where('chat_id', $chatId)->orderBy('id', 'DESC')->paginate($perPage);
 
         $data = [
             'data' => $messages->items(),

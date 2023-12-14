@@ -36,7 +36,7 @@ export default function useUser () {
     }
 
     const addNewItem = (data) => {
-        messages.value.push(data)
+        messages.value.unshift(data)
     }
     
     return {

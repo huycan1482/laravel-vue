@@ -6,8 +6,10 @@ use App\Events\MessageEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\Message\CreateRequest;
 use App\Models\Message;
+use App\Models\User;
 use App\Services\Model\MessageService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class MessageController extends Controller
 {
