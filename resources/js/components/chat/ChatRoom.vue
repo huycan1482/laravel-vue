@@ -23,7 +23,7 @@
                     </div>
                 </div>
             </div>
-            <div class="chat-content">
+            <div class="chat-content" @scroll="scroll">
                 <div class="chat-message" v-for="message in messages" :key="message.id" :class="(message.sender_id == authInfo.id) ? 'right' : 'left'">
                     <div class="sender-img">
                         <div class="avatar">
@@ -90,7 +90,7 @@ export default {
         const { formatDate } = common()
         const chatId = props.chatId
 
-        const { sendMessage, getChatMessages, messages } = useMessage()
+        const { sendMessage, getChatMessages, messages, conditions, totalMess } = useMessage()
 
         const saveMessage = () => {
             let formData = new FormData();
@@ -114,8 +114,23 @@ export default {
             element.scrollTop = element.scrollHeight;
         }
 
+        const scroll = (e) => {
+            const {target} = e;
+
+            if (messages.value.length >= totalMess.value) {
+                return 0
+            }
+
+            if (Math.ceil(target.scrollTop)*(-1) > (target.scrollHeight - target.offsetHeight)) {
+                conditions.last_id = messages.value[messages.value.length - 1].id;
+                conditions.chat_id = chatId
+                getChatMessages()
+            }
+        }
+
         onMounted(() => {
-            getChatMessages({ chat_id: chatId })
+            conditions.chat_id = chatId
+            getChatMessages()
 
             let roomName = 'chat.' + chatId   
             console.log("DH room name ", roomName)
@@ -125,29 +140,30 @@ export default {
                     console.log('New message received:', e.message);
                 })
 
-            Echo.join(roomName)
-                .joining((user) => { // gọi khi có user mới join vào phòng
-                    // this.usersOnline.push(user)
-                    console.log("New user ",user)
-                })
-                .leaving((user) => { // gọi khi có user rời phòng
-                    // const index = this.usersOnline.findIndex(item => item.id === user.id)
-                    // if (index > -1) {
-                    //     this.usersOnline.splice(index, 1)
-                    // }
-                    console.log("User leaving ",user)
-                })
-                .here((users) => { // gọi ngay thời điểm ta join vào phòng, trả về tổng số user hiện tại có trong phòng (cả ta)
-                    // this.usersOnline = users
-                    console.log("Total user ",users)
-                })
+            // Echo.join(roomName)
+            //     .joining((user) => { // gọi khi có user mới join vào phòng
+            //         // this.usersOnline.push(user)
+            //         console.log("New user ",user)
+            //     })
+            //     .leaving((user) => { // gọi khi có user rời phòng
+            //         // const index = this.usersOnline.findIndex(item => item.id === user.id)
+            //         // if (index > -1) {
+            //         //     this.usersOnline.splice(index, 1)
+            //         // }
+            //         console.log("User leaving ",user)
+            //     })
+            //     .here((users) => { // gọi ngay thời điểm ta join vào phòng, trả về tổng số user hiện tại có trong phòng (cả ta)
+            //         // this.usersOnline = users
+            //         console.log("Total user ",users)
+            //     })
         })
 
 
-        watch(messages, (newVal, oldVal) => {
-            scrollToBottom()
-        }, { deep: true })
+        // watch(messages, (newVal, oldVal) => {
+        //     scrollToBottom()
+        // }, { deep: true })
 
+        
         return {
             form,
             authInfo,
@@ -156,6 +172,7 @@ export default {
             messages,
             getImgDefault,
             scrollToBottom,
+            scroll
         }
     }
 } 

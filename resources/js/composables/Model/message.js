@@ -8,8 +8,7 @@ export default function useUser () {
     const message = ref([])
     const errors = ref([])
     const errorText = ref('')
-    const currentPage = ref('')
-    const lastPage = ref('')
+    const totalMess = ref('')
     const conditions = {}
 
     const sendMessage = async (data) => {
@@ -24,12 +23,11 @@ export default function useUser () {
         }
     } 
 
-    const getChatMessages = async (data) => {
+    const getChatMessages = async () => {
         try {
-            let response = await axiosInstance.get('/api/messages/get-chat-messages', {params : data})
-            messages.value = response.data.data.data
-            currentPage.value = response.data.data.page
-            lastPage.value = response.data.data.lastPage
+            let response = await axiosInstance.get('/api/messages/get-chat-messages', {params : conditions})
+            await addItems(response.data.data);
+
         } catch (e) {
             console.log("GetChatMessages error", e)
         }
@@ -37,11 +35,26 @@ export default function useUser () {
 
     const addNewItem = (data) => {
         messages.value.unshift(data)
+
+        //scroll to bottom
+        var element = document.querySelector('.chat-content');
+        element.scrollTop = element.scrollHeight;
+    }
+
+    const addItems = (data) => {
+        if (messages.value.length > 0) {
+            messages.value.push(...data.data)
+        } else {
+            messages.value = data.data
+        }
+        totalMess.value = data.total
     }
     
     return {
         messages,
         sendMessage,
-        getChatMessages
+        getChatMessages,
+        conditions,
+        totalMess,
     }
 }

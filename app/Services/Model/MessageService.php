@@ -6,6 +6,8 @@ use App\Events\MessageEvent;
 use App\Events\SendPrivateMessage;
 use App\Models\Message;
 use App\Services\TelegramService;
+use Illuminate\Support\Facades\DB;
+
 // use App\Events\MessagePosted;
 
 class MessageService
@@ -38,21 +40,22 @@ class MessageService
         return $res;
     }
 
-    public function getChatMessages ($chatId)
+    public function getChatMessages ($chatId, $lastId)
     {
         if (empty($chatId)) return [];
         $perPage = 5;
-        $messages = $this->model::where('chat_id', $chatId)->orderBy('id', 'DESC')->paginate($perPage);
+        $messages = $this->model::where('chat_id', '=', $chatId);
+        if (!empty($lastId)) {
+            $messages = $messages->where('id', '<', $lastId);
+        }
+        $messages = $messages->orderBy('id', 'DESC')->limit($perPage)->get();
+        return $messages;
+    }
 
-        $data = [
-            'data' => $messages->items(),
-            'totalCount' => $messages->count(),
-            'currentCount' => $messages->perPage(),
-            'page' => $messages->currentPage(),
-            'lastPage' => $messages->lastPage(),
-        ];
-        
-        return $data;
+    public function countMess ($chatId) 
+    {
+        $count = $this->model::where('chat_id', '=', $chatId)->count();
+        return $count;
     }
 
     public function sendMessage($data)

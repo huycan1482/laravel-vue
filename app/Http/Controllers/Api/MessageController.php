@@ -29,8 +29,10 @@ class MessageController extends Controller
     public function getChatMessages (Request $request)
     {
         $chatId = $request->input('chat_id', '');
-        $messages = $this->messageService->getChatMessages($chatId);
-        return response()->json(['success' => true, 'data' => $messages]);
+        $lastId = $request->input('last_id', '');
+        $messages = $this->messageService->getChatMessages($chatId, $lastId);
+        $total = $this->messageService->countMess($chatId);
+        return response()->json(['success' => true, 'data' => ['data' => $messages, 'total' => $total]]);
     }
 
     public function sendMessage (CreateRequest $request)
