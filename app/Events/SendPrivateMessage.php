@@ -15,7 +15,7 @@ class SendPrivateMessage implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    private $message;
+    public $message;
     /**
      * Create a new event instance.
      *
@@ -36,10 +36,10 @@ class SendPrivateMessage implements ShouldBroadcast
         return new PrivateChannel('chat.'.$this->message->chat_id);
     }
 
-    public function broadcastWith ()
-    {
-        //return data
-        return ['message' => $this->message];
-    }
+    // public function broadcastWith ()
+    // {
+    //     //return data
+    //     return ['message' => $this->message];
+    // }
 
 }

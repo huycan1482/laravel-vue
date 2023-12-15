@@ -14,4 +14,9 @@ class Message extends Model
     protected $fillable = [
         'sender_id', 'chat_id', 'content', 'image', 'status', 
     ];
+
+    public function sender () 
+    {
+        return $this->hasOne('App\Models\User', 'id', 'sender_id');
+    }
 }

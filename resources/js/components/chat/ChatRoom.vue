@@ -90,7 +90,7 @@ export default {
         const { formatDate } = common()
         const chatId = props.chatId
 
-        const { sendMessage, getChatMessages, messages, conditions, totalMess } = useMessage()
+        const { sendMessage, getChatMessages, messages, conditions, totalMess, newMessage } = useMessage()
 
         const saveMessage = () => {
             let formData = new FormData();
@@ -121,7 +121,7 @@ export default {
                 return 0
             }
 
-            if (Math.ceil(target.scrollTop)*(-1) > (target.scrollHeight - target.offsetHeight)) {
+            if (Math.ceil(target.scrollTop)*(-1) == (target.scrollHeight - target.offsetHeight)) {
                 conditions.last_id = messages.value[messages.value.length - 1].id;
                 conditions.chat_id = chatId
                 getChatMessages()
@@ -132,36 +132,44 @@ export default {
             conditions.chat_id = chatId
             getChatMessages()
 
-            let roomName = 'chat.' + chatId   
-            console.log("DH room name ", roomName)
+            let privateRoom = 'chat.' + chatId   
+            let publicRoom = 'room.' + chatId   
+            console.log("DH privateRoom ", privateRoom)
             
-            Echo.private(roomName)
+            Echo.private(privateRoom)
                 .listen('SendPrivateMessage', (e) => {
                     console.log('New message received:', e.message);
+                    const newMessage = e.message
+                    if (newMessage.chat_id == chatId) {
+
+                    }
                 })
 
-            // Echo.join(roomName)
-            //     .joining((user) => { // gọi khi có user mới join vào phòng
-            //         // this.usersOnline.push(user)
-            //         console.log("New user ",user)
-            //     })
-            //     .leaving((user) => { // gọi khi có user rời phòng
-            //         // const index = this.usersOnline.findIndex(item => item.id === user.id)
-            //         // if (index > -1) {
-            //         //     this.usersOnline.splice(index, 1)
-            //         // }
-            //         console.log("User leaving ",user)
-            //     })
-            //     .here((users) => { // gọi ngay thời điểm ta join vào phòng, trả về tổng số user hiện tại có trong phòng (cả ta)
-            //         // this.usersOnline = users
-            //         console.log("Total user ",users)
-            //     })
+            Echo.join(publicRoom)
+                .listen('MessagePosted', (e) => {
+                    console.log("MessagePosted", e)
+                })
+                .joining((user) => { // gọi khi có user mới join vào phòng
+                    // this.usersOnline.push(user)
+                    console.log("New user ",user)
+                })
+                .leaving((user) => { // gọi khi có user rời phòng
+                    // const index = this.usersOnline.findIndex(item => item.id === user.id)
+                    // if (index > -1) {
+                    //     this.usersOnline.splice(index, 1)
+                    // }
+                    console.log("User leaving ",user)
+                })
+                .here((users) => { // gọi ngay thời điểm ta join vào phòng, trả về tổng số user hiện tại có trong phòng (cả ta)
+                    // this.usersOnline = users
+                    console.log("Total user ",users)
+                })
         })
 
 
-        // watch(messages, (newVal, oldVal) => {
-        //     scrollToBottom()
-        // }, { deep: true })
+        watch(newMessage, (newVal, oldVal) => {
+            scrollToBottom()
+        }, { deep: true })
 
         
         return {

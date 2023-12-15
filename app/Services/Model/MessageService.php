@@ -67,7 +67,9 @@ class MessageService
 
     public function sendPusher ($data) 
     {
-        $e = event(new SendPrivateMessage($data));
+        // $e = event(new SendPrivateMessage($data));
+
+        broadcast(new SendPrivateMessage($data))->toOthers();
         // $e = broadcast(new MessageEvent($data))->toOthers();
         // TelegramService::sendMsg("Send Pusher".json_encode($e));
         // return $message;

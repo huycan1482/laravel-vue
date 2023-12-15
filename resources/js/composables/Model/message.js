@@ -10,10 +10,10 @@ export default function useUser () {
     const errorText = ref('')
     const totalMess = ref('')
     const conditions = {}
+    const newMessage = ref(false)
 
     const sendMessage = async (data) => {
-        errorText.value = ''
-        errors.value = ''
+        
         try {
             const res = await axiosInstance.post('/api/messages/send-message', data)
             await addNewItem(res.data.data);
@@ -35,10 +35,7 @@ export default function useUser () {
 
     const addNewItem = (data) => {
         messages.value.unshift(data)
-
-        //scroll to bottom
-        var element = document.querySelector('.chat-content');
-        element.scrollTop = element.scrollHeight;
+        newMessage.value = true
     }
 
     const addItems = (data) => {
@@ -56,5 +53,6 @@ export default function useUser () {
         getChatMessages,
         conditions,
         totalMess,
+        newMessage
     }
 }
