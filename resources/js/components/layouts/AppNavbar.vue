@@ -145,7 +145,9 @@ export default {
         flex-direction: row;
         .dropdown-menu {
             position: absolute;
-            float: left;
+            left: 0;
+            top: 35px;
+            min-width: 100px;
             border: 1px solid transparent;
             & > li {
                 padding: 0 5px;

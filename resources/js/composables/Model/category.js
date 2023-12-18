@@ -1,5 +1,5 @@
 import { ref, reactive } from 'vue'
-import commonFunc from "../../common/common"
+import alertFunc from "../../common/alert"
 import apiCaller from '../../plugins/axios';
 
 export default function useCategory () {
@@ -10,7 +10,7 @@ export default function useCategory () {
     const errors = ref([])
     const errorText = ref('')
 
-    const { sweetAlert, sweetAlertChangePage } = commonFunc()
+    const { sweetAlert, sweetAlertChangePage } = alertFunc()
 
     const getCategories = async () => {
         let response = await axiosInstance.get('/api/category/getAll')

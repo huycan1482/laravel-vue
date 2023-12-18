@@ -40,7 +40,7 @@
 <script>
 import useCategory from "../../composables/Model/category"
 import { onMounted, inject, computed } from "vue"
-import commonFunc from "../../common/common"
+import commonFunc from "../../common/main"
 
 export default {
     setup () {

@@ -1,5 +1,6 @@
 import { ref } from 'vue'
-import commonFunc from "../../common/common"
+import commonFunc from "../../common/main"
+import commonAlert from "../../common/alert"
 import apiCaller from '../../plugins/axios';
 
 export default function useChat () {
@@ -13,7 +14,8 @@ export default function useChat () {
     const lastPage = ref('')
     const conditions = {}
 
-    const { sweetAlert, sweetAlertChangePage, setParamsUrl } = commonFunc()
+    const { setParamsUrl } = commonFunc()
+    const { sweetAlert, sweetAlertChangePage } = commonAlert()
 
     const getChats = async () => {
         let response = await axiosInstance.get('/api/chats/search', {params: conditions})

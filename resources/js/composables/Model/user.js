@@ -1,5 +1,6 @@
 import { ref } from 'vue'
-import commonFunc from "../../common/common"
+import commonFunc from "../../common/main"
+import alertFunc from "../../common/alert"
 import apiCaller from '../../plugins/axios';
 
 export default function useUser () {
@@ -13,7 +14,8 @@ export default function useUser () {
     const lastPage = ref('')
     const conditions = {}
 
-    const { sweetAlert, sweetAlertChangePage, setParamsUrl } = commonFunc()
+    const { setParamsUrl } = commonFunc()
+    const { sweetAlert, sweetAlertChangePage } = alertFunc()
 
     const getUsers = async () => {
         let response = await axiosInstance.get('/api/users/search', {params: conditions})

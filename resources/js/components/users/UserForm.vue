@@ -21,6 +21,11 @@
                     <input type="email" class="form-control" id="inputEmail" v-model="form.email">
                     <span class="red-text" v-if="errors.email">{{ errors.email[0] }}</span>
                 </div>
+                <div class="mb-3">
+                    <label for="inputPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="inputPassword" v-model="form.password">
+                    <span class="red-text" v-if="errors.password">{{ errors.password[0] }}</span>
+                </div>
                 <!-- <div class="mb-3 form-check">
                     <input type="checkbox" class="form-check-input" id="exampleCheck1">
                     <label class="form-check-label" for="exampleCheck1">Check me out</label>
@@ -48,6 +53,7 @@ export default {
             'id': null,
             'name': '',
             'email': '',
+            'password': '',
         })
 
         const { user, errorText, errors, getUser, storeUser, updateUser } = useUser()

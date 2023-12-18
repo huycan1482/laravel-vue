@@ -83,7 +83,7 @@
 <script>
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useStore } from 'vuex'
-import common from '../../common/common'
+import common from '../../common/main'
 import useMessage from '../../composables/Model/message'
 import useChat from '../../composables/Model/chat'
 

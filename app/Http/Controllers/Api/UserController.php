@@ -7,6 +7,7 @@ use App\Http\Requests\Api\User\CreateRequest;
 use App\Http\Requests\Api\User\EditRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -22,7 +23,7 @@ class UserController extends Controller
     {
         // dd($request->all());
 
-        $users = User::paginate(1);
+        $users = User::paginate(5);
 
         $data = [
             'data' => $users->items(),
@@ -43,8 +44,10 @@ class UserController extends Controller
 
     public function store (CreateRequest $request)
     {
-        // dd($request->all());
-        $user = User::create($request->all());
+        $data = $request->only('name', 'email', 'password');
+        $data['password'] = Hash::make($data['password']);
+        $data['password_active'] = 1;
+        $user = User::create($data);
         return response()->json(['success' => true, 'data' => $user]);
     }
 

@@ -31,7 +31,7 @@
 
 <script>
 import { onMounted, watch, watchEffect } from 'vue'
-import commonFunc from "../../common/common"
+import commonFunc from "../../common/main"
 import ChatCreate from "./ChatCreate.vue"
 import useChat from "./../../composables/Model/chat"
 import NavigationBar from "./../layouts/NavigationBar.vue"

@@ -1,8 +1,7 @@
 import { inject } from 'vue'
-import { useRouter } from 'vue-router';
+import { useRouter } from 'vue-router'
 
-
-export default () => {
+export default function commonFunc () {
     const swal = inject('$swal')
     const router = useRouter()
 
@@ -55,6 +54,10 @@ export default () => {
         }
 
         return conditions
+    }
+
+    const loadingModal = () => {
+
     }
 
     const sweetAlert = (title, text, icon) => {
@@ -126,11 +129,11 @@ export default () => {
 
     return {
         formatDate,
-        sweetAlert,
-        sweetAlertTopEnd,
-        sweetAlertChangePage,
+        // sweetAlert,
+        // sweetAlertTopEnd,
+        // sweetAlertChangePage,
         getImgURL,
-        sweetLoading,
+        // sweetLoading,
         setParamsUrl,
         getParamsUrl,
     }
