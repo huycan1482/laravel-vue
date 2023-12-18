@@ -1,7 +1,7 @@
 import { ref } from 'vue'
 import apiCaller from '../../plugins/axios';
 
-export default function useUser () {
+export default function useMessage () {
     const axiosInstance = apiCaller();
 
     const messages = ref([])

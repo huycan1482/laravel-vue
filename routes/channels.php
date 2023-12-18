@@ -29,5 +29,6 @@ Broadcast::channel('chat.{chatId}', function ($user, $chatId) {
 Broadcast::channel('room.{chatId}', function ($user, $chatId) {
     $chatsId = $user->getChatsId->pluck('id')->toArray();
 
+    // $user = $user->pluck('id', 'name', 'image');
     return in_array($chatId, $chatsId) ? $user : [];
 });

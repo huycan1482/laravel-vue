@@ -29,7 +29,7 @@ class ChatController extends Controller
 
     public function search (Request $request)
     {
-        $chats = Chat::paginate(5);
+        $chats = Chat::select('chats.*')->join('user_chat', 'user_chat.chat_id', '=', 'chats.id')->where('user_chat.user_id', Auth::guard('api')->user()->id)->paginate(5);
 
         $data = [
             'data' => $chats->items(),
@@ -76,6 +76,22 @@ class ChatController extends Controller
 
     public function getChatRoom (Request $request, $id)
     {
-        
+        $chat = Chat::find($id);
+
+        return response(['success' => true, 'data' => $chat]);
+    }
+
+    public function addUser (Request $request)
+    {
+        $data = $request->only('user_id', 'chat_id');
+        $search = UserChat::where(['user_id' => $data['user_id'], 'chat_id' => $data['chat_id']])->first();
+
+        if (!empty($search)) {
+            return response(['success' => false, 'data' => []]);
+        }
+
+        UserChat::create($data);
+
+        return response(['success' => true, 'data' => []]);
     }
 }

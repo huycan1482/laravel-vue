@@ -2,7 +2,7 @@ import { ref } from 'vue'
 import commonFunc from "../../common/common"
 import apiCaller from '../../plugins/axios';
 
-export default function useUser () {
+export default function useChat () {
     const axiosInstance = apiCaller();
 
     const chats = ref([])
@@ -23,8 +23,8 @@ export default function useUser () {
         lastPage.value = response.data.data.lastPage
     }
 
-    const getChat = async (id) => {
-        let response = await axiosInstance.get('/api/chats/show/'+id)
+    const getChatRoom = async (id) => {
+        let response = await axiosInstance.get('/api/chats/chat-room/'+id)
         chat.value = response.data.data
     }
 
@@ -101,7 +101,7 @@ export default function useUser () {
         errors,
         errorText,
         getChats,
-        getChat,
+        getChatRoom,
         storeChat,
         updateChat,
         destroyChat,
