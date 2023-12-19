@@ -61,11 +61,11 @@ class MessageService
     public function sendMessage($data)
     {
         $res = $this->create($data);
-        $this->sendPusher($res);
+        $this->sendSocket($res);
         return $res;
     }
 
-    public function sendPusher ($data) 
+    public function sendSocket ($data) 
     {
         // $e = event(new SendPrivateMessage($data));
 

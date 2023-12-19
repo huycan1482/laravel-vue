@@ -9,18 +9,29 @@
 
     <div class="content-body">
         <table class="table table-borderless">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
             <tbody>
-                <tr v-for="chat in chats" :key="chat.id">
-                    <td class="text-start">
+                <tr v-for="(chat, key) in chats" :key="chat.id">
+                    <th scope="row">{{ key + 1 }}</th>
+                    <td class="">
                         <img class="item-image" :src="getImgURL(chat.image)" alt="" width="50" height="50">
                     </td>
                     <td>
                         {{ chat.name }}
                     </td>
                     <!-- <td>{{ `${formatDate(category.created_at).date} ${formatDate(category.created_at).time}` }}</td> -->
-                    <td class="text-end">
+                    <td class="">
                         <router-link :to="{ name: 'chat.chat-room', params: { chatId: chat.id } }" type="button" class="btn btn-primary me-2">Join</router-link>
-                        <!-- <div class="btn btn-primary">Join</div> -->
+                        <!-- <router-link :to="{ name: 'chat.chat-room', params: { chatId: chat.id } }" type="button" class="btn btn-primary me-2">Join</router-link> -->
+                        <!-- <div class="btn btn-primary">+ Add User</div> -->
+                        <AddUser :addUser="addUser" :chatId="chat.id"/>
                     </td>
                 </tr>
             </tbody>
@@ -32,21 +43,27 @@
 <script>
 import { onMounted, watch, watchEffect } from 'vue'
 import commonFunc from "../../common/main"
+import alertFunc from "../../common/alert"
 import ChatCreate from "./ChatCreate.vue"
 import useChat from "./../../composables/Model/chat"
 import NavigationBar from "./../layouts/NavigationBar.vue"
+import AddUser from "./AddUser.vue"
 
 export default {
     components: {
         ChatCreate,
-        NavigationBar
+        NavigationBar,
+        AddUser
     },
     setup() {
         const { getImgURL } = commonFunc()
+        const { loadingModal } = alertFunc()
 
-        const { chats, getChats, storeChat, currentPage, lastPage, conditions } = useChat()
+        const { chats, getChats, storeChat, currentPage, lastPage, conditions, addUser } = useChat()
 
-        onMounted(getChats)
+        onMounted(() => {
+            getChats()
+        })
 
         const changePage = (page) => {
             conditions.page = page
@@ -61,6 +78,7 @@ export default {
             conditions,
             changePage,
             storeChat,
+            addUser,
         }
     }
 }
@@ -73,6 +91,6 @@ export default {
     }
 
     table td:first-child, table td:last-child {
-        width: 10%;
+        width: 20%;
     }
 </style>

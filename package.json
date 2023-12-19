@@ -29,6 +29,7 @@
         "laravel-echo": "^1.15.3",
         "pusher-js": "^8.3.0",
         "uuid": "^9.0.1",
+        "v-select2-component": "^0.4.7",
         "vue": "^3.2.36",
         "vue-loader": "^17.2.2",
         "vue-router": "^4.0.13",

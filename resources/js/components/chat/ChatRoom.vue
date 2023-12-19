@@ -2,7 +2,7 @@
     <div class="d-flex">
         <div class="chat-sidebar box">
             <div class="chat-header">
-                <div class="chat-title">
+                <div class="chat-title d-flex align-items-center">
                     <p>Online</p>
                 </div>
                 <form class="form-find-user">
@@ -163,7 +163,7 @@ export default {
                     console.log('New message received:', e.message);
                     const newMessage = e.message
                     if (newMessage.chat_id == chatId) {
-
+                        messages.value.unshift(newMessage)
                     }
                 })
 

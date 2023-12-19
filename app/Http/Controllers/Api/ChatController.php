@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Chat;
+use App\Models\User;
 use App\Models\UserChat;
 use App\Services\Model\ChatService;
 use App\Services\TelegramService;
@@ -29,7 +30,8 @@ class ChatController extends Controller
 
     public function search (Request $request)
     {
-        $chats = Chat::select('chats.*')->join('user_chat', 'user_chat.chat_id', '=', 'chats.id')->where('user_chat.user_id', Auth::guard('api')->user()->id)->paginate(5);
+        $chats = Chat::select('chats.*')->join('user_chat', 'user_chat.chat_id', '=', 'chats.id')
+        ->where('user_chat.user_id', Auth::guard('api')->user()->id)->paginate(5);
 
         $data = [
             'data' => $chats->items(),
@@ -83,15 +85,26 @@ class ChatController extends Controller
 
     public function addUser (Request $request)
     {
-        $data = $request->only('user_id', 'chat_id');
-        $search = UserChat::where(['user_id' => $data['user_id'], 'chat_id' => $data['chat_id']])->first();
+        // dd($request->all());
+        $user = User::where('email', $request->input('user_email'))->first();
 
-        if (!empty($search)) {
-            return response(['success' => false, 'data' => []]);
+        if(empty($user)) {
+            return response(['success' => false, 'data' => [], 'message' => 'User not found']);
         }
 
-        UserChat::create($data);
+        // $data = $request->only('user_id', 'chat_id');
+        // $search = UserChat::where(['user_id' => $data['user_id'], 'chat_id' => $data['chat_id']])->first();
 
-        return response(['success' => true, 'data' => []]);
+        $data = $request->only('chat_id');
+        $search = UserChat::where(['user_id' => $user->id, 'chat_id' => $data['chat_id']])->first();
+
+        if (!empty($search)) {
+            return response(['success' => false, 'data' => [], 'message' => 'User already exists']);
+        }
+
+        $data['user_id'] = $user->id;
+        $res = UserChat::create($data);
+
+        return response(['success' => !empty($res) ? true : false, 'data' => [], 'message' => '']);
     }
 }

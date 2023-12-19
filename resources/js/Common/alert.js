@@ -5,8 +5,19 @@ export default () => {
     const swal = inject('$swal')
     const router = useRouter()
 
-    const loadingModal = () => {
+    const loadingShow = () => swal.showLoading()
+    const loadingHide = () => swal.hideLoading()
 
+    const loadingModal = () => {
+        // swal.showLoading()
+        swal.fire({
+            title: 'Please Wait !',
+            html: `<div class="loading-spinner"></div>`,
+            allowOutsideClick: false,
+            onBeforeOpen: () => {
+                Swal.showLoading()
+            },
+        })
     }
 
     const sweetAlert = (title, text, icon) => {
@@ -82,5 +93,7 @@ export default () => {
         sweetAlertChangePage,
         sweetAlertTopEnd,
         sweetLoading,
+        loadingShow,
+        loadingHide,
     }
 }

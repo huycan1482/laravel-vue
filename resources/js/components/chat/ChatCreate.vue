@@ -42,6 +42,7 @@
 
 <script>
 import {ref} from "vue"
+import alertCommon from "../../common/alert"
 
 export default {
     props: ['storeChat'],
@@ -52,10 +53,13 @@ export default {
         'image': '',
       })
 
+      const { loadingModal } = alertCommon()
+
       const storeData = props.storeChat
 
       const saveChat = () => {
-
+        loadingModal()
+        
         let formData = new FormData();
         formData.append('name', form.value.name ? form.value.name : '');
         formData.append('image', form.value.newImage ? form.value.newImage : '');

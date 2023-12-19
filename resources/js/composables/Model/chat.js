@@ -15,7 +15,15 @@ export default function useChat () {
     const conditions = {}
 
     const { setParamsUrl } = commonFunc()
-    const { sweetAlert, sweetAlertChangePage } = commonAlert()
+    const { sweetAlert, sweetAlertChangePage, loadingModal } = commonAlert()
+
+    const handleResponseAlert = (response) => {
+        if (response.success) {
+            sweetAlert(response.message ? response.message : 'Success', '', 'success')
+        } else {
+            sweetAlert(response.message ? response.message : 'Fail', '', 'error')
+        }
+    }
 
     const getChats = async () => {
         let response = await axiosInstance.get('/api/chats/search', {params: conditions})
@@ -36,12 +44,13 @@ export default function useChat () {
         try {
             const res = await axiosInstance.post('/api/chats', data)
             await addNewItem(res.data.data);
-            sweetAlert('Store success', '', 'success')
+            await handleResponseAlert(res.data)
+            // sweetAlert('Store success', '', 'success')
             // await router.push({name: 'user.index'})
 
         } catch (e) {
-            sweetAlert('Store fail', e.response.data.message ? e.response.data.message :  '', 'error')
-
+            handleResponseAlert(e.response.data)
+            // sweetAlert('Store fail', e.response.data.message ? e.response.data.message :  '', 'error')
             if (e.response.status === 422) {
                 for (const key in e.response.data.errors) {
                     errorText.value += e.response.data.errors[key][0] + ' '
@@ -96,6 +105,25 @@ export default function useChat () {
     const addNewItem = (data) => {
         chats.value.push(data)
     }
+
+    const addUser = async (data) => {
+        try {
+            const res = await axiosInstance.post('/api/chats/add-user', data)
+            await handleResponseAlert(res.data)
+            // await router.push({name: 'user.index'})
+
+        } catch (e) {
+            sweetAlert('Store fail', e.response.data.message ? e.response.data.message :  '', 'error')
+
+            if (e.response.status === 422) {
+                for (const key in e.response.data.errors) {
+                    errorText.value += e.response.data.errors[key][0] + ' '
+                }
+                errors.value = e.response.data.errors
+            }
+
+        }
+    }
     
     return {
         chats,
@@ -107,8 +135,10 @@ export default function useChat () {
         storeChat,
         updateChat,
         destroyChat,
+        addUser,
         currentPage,
         lastPage,
-        conditions
+        conditions,
+        
     }
 }
