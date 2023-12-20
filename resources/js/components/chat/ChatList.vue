@@ -3,7 +3,6 @@
         <h5 class="mb-0">Chat List</h5>
         <div class="ms-2">
             <ChatCreate :storeChat="storeChat"/>
-            <!-- <router-link :to="{ name: 'chat.create' }" type="button" class="badge bg-primary cursor">+ Add Category</router-link> -->
         </div>
     </div>
 
@@ -26,22 +25,23 @@
                     <td>
                         {{ chat.name }}
                     </td>
-                    <!-- <td>{{ `${formatDate(category.created_at).date} ${formatDate(category.created_at).time}` }}</td> -->
                     <td class="">
                         <router-link :to="{ name: 'chat.chat-room', params: { chatId: chat.id } }" type="button" class="btn btn-primary me-2">Join</router-link>
-                        <!-- <router-link :to="{ name: 'chat.chat-room', params: { chatId: chat.id } }" type="button" class="btn btn-primary me-2">Join</router-link> -->
-                        <!-- <div class="btn btn-primary">+ Add User</div> -->
-                        <AddUser :addUser="addUser" :chatId="chat.id"/>
+                        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal" @click="chatIdSelected = chat.id">
+                            + Add User
+                        </button>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
     <NavigationBar @changePage="changePage" :currentPage="currentPage ? currentPage : 0" :lastPage="lastPage ? lastPage : 0" v-if="lastPage != 1"/>
+
+    <AddUser :addUser="addUser" :chatId="chatIdSelected"/>
 </template>
 
 <script>
-import { onMounted, watch, watchEffect } from 'vue'
+import { ref, onMounted, watch, watchEffect } from 'vue'
 import commonFunc from "../../common/main"
 import alertFunc from "../../common/alert"
 import ChatCreate from "./ChatCreate.vue"
@@ -53,13 +53,15 @@ export default {
     components: {
         ChatCreate,
         NavigationBar,
-        AddUser
+        AddUser,
     },
     setup() {
         const { getImgURL } = commonFunc()
         const { loadingModal } = alertFunc()
 
         const { chats, getChats, storeChat, currentPage, lastPage, conditions, addUser } = useChat()
+
+        const chatIdSelected = ref('0')
 
         onMounted(() => {
             getChats()
@@ -79,6 +81,7 @@ export default {
             changePage,
             storeChat,
             addUser,
+            chatIdSelected,
         }
     }
 }

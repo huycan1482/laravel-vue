@@ -14,6 +14,8 @@ export default function useChat () {
     const lastPage = ref('')
     const conditions = {}
 
+    const users = ref([])
+
     const { setParamsUrl } = commonFunc()
     const { sweetAlert, sweetAlertChangePage, loadingModal } = commonAlert()
 
@@ -125,6 +127,11 @@ export default function useChat () {
         }
     }
     
+    const getUsers =  async () => {
+        let response = await axiosInstance.get('/api/chats/get-users')
+        users.value = response.data.data.data
+    }
+
     return {
         chats,
         chat,
@@ -139,6 +146,7 @@ export default function useChat () {
         currentPage,
         lastPage,
         conditions,
-        
+        getUsers,
+        users
     }
 }

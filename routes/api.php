@@ -56,6 +56,7 @@ Route::group(['middleware' => 'auth.jwt'], function () {
         Route::get('/search', 'ChatController@search');
         Route::get('/chat-room/{chat}', 'ChatController@getChatRoom');
         Route::post('/add-user', 'ChatController@addUser');
+        Route::get('/get-users', 'ChatController@getUsers');
     });
     
     Route::prefix('messages')->group(function () {

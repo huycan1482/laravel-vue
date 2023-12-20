@@ -86,25 +86,43 @@ class ChatController extends Controller
     public function addUser (Request $request)
     {
         // dd($request->all());
-        $user = User::where('email', $request->input('user_email'))->first();
+        // $user = User::where('email', $request->input('user_email'))->first();
 
-        if(empty($user)) {
-            return response(['success' => false, 'data' => [], 'message' => 'User not found']);
-        }
+        // if(empty($user)) {
+        //     return response(['success' => false, 'data' => [], 'message' => 'User not found']);
+        // }
 
         // $data = $request->only('user_id', 'chat_id');
         // $search = UserChat::where(['user_id' => $data['user_id'], 'chat_id' => $data['chat_id']])->first();
 
-        $data = $request->only('chat_id');
-        $search = UserChat::where(['user_id' => $user->id, 'chat_id' => $data['chat_id']])->first();
+        $data = $request->only('chat_id', 'user_id');
+        $search = UserChat::where(['user_id' => $data['user_id'], 'chat_id' => $data['chat_id']])->first();
 
         if (!empty($search)) {
             return response(['success' => false, 'data' => [], 'message' => 'User already exists']);
         }
 
-        $data['user_id'] = $user->id;
+        // $data['user_id'] = $user->id;
         $res = UserChat::create($data);
 
         return response(['success' => !empty($res) ? true : false, 'data' => [], 'message' => '']);
+    }
+
+    //lấy dữ liệu user dùng cho select2
+    public function getUsers(Request $request)
+    {
+
+        $users = User::select(['id', 'email as text'])->paginate(5);
+        // $users = User::select('id', 'email')->paginate(10);
+
+        $data = [
+            'data' => $users->items(),
+            'totalCount' => $users->count(),
+            'currentCount' => $users->perPage(),
+            'page' => $users->currentPage(),
+            'lastPage' => $users->lastPage(),
+        ];
+
+        return response(['success' => true, 'data' => $data]);
     }
 }
