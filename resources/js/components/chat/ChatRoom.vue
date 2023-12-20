@@ -451,5 +451,7 @@ export default {
         }
     }
 
-    
+    .content-body .table {
+        color: #5d596c;
+    }
 </style>

@@ -93,4 +93,8 @@ export default {
     table td:first-child, table td:last-child {
         width: 20%;
     }
+
+    .content-body .table {
+        color: #5d596c;
+    }
 </style>

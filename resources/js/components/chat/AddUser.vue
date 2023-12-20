@@ -1,7 +1,8 @@
 <template>
   <!-- Button trigger modal -->
 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
-  + Add User
+  + 
+  <i class="fa-solid fa-user"></i>
 </button>
 
 <!-- Modal -->
