@@ -24,11 +24,14 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 // import VueToastify from 'vue3-toastify';
 // import 'vue3-toastify/dist/index.css';
 
+import ElementPlus from 'element-plus';
+import 'element-plus/dist/index.css';
 
 const app = createApp(App)
 app.component("font-awesome-icon", FontAwesomeIcon)
 app.use(router)
 app.use(VueSweetalert2)
+app.use(ElementPlus)
 // app.use(BootstrapVue)
 // app.use(IconsPlugin)
 app.use(store)

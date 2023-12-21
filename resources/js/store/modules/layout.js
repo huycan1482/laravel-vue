@@ -5,17 +5,19 @@ const state = {
         {
             'id': uuid(),
             'name': 'Menu 1',
-            'active': true,
+            'active': false,
             'link': '',
             'icon': 'fa-solid fa-house',
+            'url': null,
             'children': [
                 {
                     'id': uuid(),
                     'name': 'Menu sub 1',
-                    'active': true,
+                    'active': false,
                     'link': '',
                     'icon': 'fa-solid fa-house',
-                    'children': ''
+                    'children': '',
+                    'url': null,
                 },
                 {
                     'id': uuid(),
@@ -23,7 +25,8 @@ const state = {
                     'active': false,
                     'link': '',
                     'icon': 'fa-solid fa-house',
-                    'children': ''
+                    'children': '',
+                    'url': null,
                 },
             ]
         }, 
@@ -33,7 +36,8 @@ const state = {
             'active': false,
             'link': 'user.index',
             'icon': 'fa-solid fa-house',
-            'children': []
+            'children': [],
+            'url': '/users',
         },
         {
             'id': uuid(),
@@ -41,7 +45,8 @@ const state = {
             'active': false,
             'link': 'category.index',
             'icon': 'fa-solid fa-house',
-            'children': []
+            'children': [],
+            'url': '/categories',
         },
         {
             'id': uuid(),
@@ -49,7 +54,8 @@ const state = {
             'active': false,
             'link': 'chat.index',
             'icon': 'fa-solid fa-house',
-            'children': []
+            'children': [],
+            'url': '/chats',
         },
         {
             'id': uuid(),
@@ -57,7 +63,8 @@ const state = {
             'active': false,
             'link': 'message.index',
             'icon': 'fa-solid fa-house',
-            'children': []
+            'children': [],
+            'url': '/messages',
         }
     ]
 }
@@ -83,6 +90,29 @@ const mutations = {
             if (navItem.children.length > 0) {
                 navItem.children.map((child) => {
                     if (child.id == item.id) {
+                        child.active = true
+                        navItem.active = true
+                    } else {
+                        child.active = false
+                    }
+                });
+            }
+            return navItem
+        })
+    },
+    CHANG_ACTIVE_ITEM(state, urlPathname) {
+        state.navBars = state.navBars.map((navItem) => {
+            
+            if ( urlPathname.includes(navItem.url) ) {
+                // navItem.active = !navItem.active;
+                navItem.active = true
+            } else {
+                navItem.active = false
+            }
+
+            if (navItem.children.length > 0) {
+                navItem.children.map((child) => {
+                    if ( urlPathname.includes(child.url) ) {
                         child.active = true
                         navItem.active = true
                     } else {

@@ -20,11 +20,17 @@
 </template>
 
 <script>
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import {v4 as uuid} from 'uuid'
+import useCommon from '../../common/main'
+
 export default {
     name: 'AppNavbar',
     setup(props, context) {
+
+        const { getParamsUrl, setParamsUrl } = useCommon()
+
+        let conditions = []
         const navBars = reactive([
             {
                 'id': uuid(),
@@ -116,8 +122,15 @@ export default {
             }
         ])
 
+        onMounted( () => {
+            getParamsUrl(conditions)
+        })
+
+        console.log("DH conditions", conditions)
+
         return {
             navBars,
+            conditions
         }
     }
 }
@@ -145,7 +158,7 @@ export default {
         flex-direction: row;
         .dropdown-menu {
             position: absolute;
-            left: 0;
+            right: 0;
             top: 35px;
             min-width: 100px;
             border: 1px solid transparent;

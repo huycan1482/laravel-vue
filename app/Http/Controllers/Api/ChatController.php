@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\Chat\AddUserRequest;
 use App\Models\Chat;
 use App\Models\User;
 use App\Models\UserChat;
@@ -83,7 +84,7 @@ class ChatController extends Controller
         return response(['success' => true, 'data' => $chat]);
     }
 
-    public function addUser (Request $request)
+    public function addUser (AddUserRequest $request)
     {
         // dd($request->all());
         // $user = User::where('email', $request->input('user_email'))->first();
@@ -112,8 +113,7 @@ class ChatController extends Controller
     public function getUsers(Request $request)
     {
 
-        $users = User::select(['id', 'email as text'])->paginate(5);
-        // $users = User::select('id', 'email')->paginate(10);
+        $users = User::select('users.id as value', 'users.email as label')->whereRaw('users.id NOT IN (SELECT users.id FROM users JOIN user_chat ON user_chat.user_id = users.id WHERE chat_id = '.$request->input('chatId', 0).')')->paginate(5);
 
         $data = [
             'data' => $users->items(),

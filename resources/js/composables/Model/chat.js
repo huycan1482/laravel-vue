@@ -127,8 +127,8 @@ export default function useChat () {
         }
     }
     
-    const getUsers =  async () => {
-        let response = await axiosInstance.get('/api/chats/get-users')
+    const getUsers =  async (chatId) => {
+        let response = await axiosInstance.get('/api/chats/get-users', {params : {'chatId' : chatId}})
         users.value = response.data.data.data
     }
 

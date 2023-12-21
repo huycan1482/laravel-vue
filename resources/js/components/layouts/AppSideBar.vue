@@ -17,7 +17,7 @@
                 <li class="menu-item" v-for="menu in navBars" :key="menu.id">
                     <!-- <a href="{{ menu.link ? menu.link : '' }}" class="" :class="[menu.active ? 'active' : '', ((menu.children.length) > 0) ? 'menu-toggle' : 'menu-link']" @click="ACTIVE_ITEM(menu)"> -->
                     <div>
-                        <router-link :to="{ name:  menu.link ? menu.link : '' }" type="button" :class="[menu.active ? 'active' : '', ((menu.children.length) > 0) ? 'menu-toggle' : 'menu-link']" @click="ACTIVE_ITEM(menu)">
+                        <router-link :to="{ name:  menu.link ? menu.link : '' }" type="button" :class="[ menu.active ? 'active' : '', ((menu.children.length) > 0) ? 'menu-toggle' : 'menu-link']" @click="activeItem(menu)">
                             <i class="" :class="menu.icon"></i>
                             <div class="menu-text">{{ menu.name }}</div>
                             <div :class="['icon-arrow icon-rotate', menu.active ? '' : 'right-90']" v-if="(menu.children.length) > 0">
@@ -27,7 +27,7 @@
                     </div>
                     <ul :class="['menu-sub slide-toggle-y', menu.active ? 'show' : '']" v-if="(menu.children.length) > 0">
                         <li class="menu-item" v-for="menuItem in menu.children" :key="menuItem.id">
-                            <a href="#" class="menu-link" :class="{active:menuItem.active}" @click="ACTIVE_ITEM(menuItem)">
+                            <a href="#" class="menu-link" :class="{active:menuItem.active}" @click="activeItem(menuItem)">
                                 <i class="" :class="menuItem.icon"></i>
                                 <div class="menu-text">{{ menuItem.name }}</div>
                             </a>
@@ -40,14 +40,21 @@
 </template>
 
 <script>
-import { reactive } from 'vue'
-import {mapGetters, mapMutations} from 'vuex'
+import { onMounted, reactive, ref } from 'vue'
+import {mapGetters, mapMutations, useStore } from 'vuex'
 
 export default {
     name: "AppSideBar",
-    computed: mapGetters(['navBars']),
-    methods: { ...mapMutations(['ACTIVE_ITEM'])},
+    // computed: mapGetters(['navBars']),
+    // methods: { ...mapMutations(['ACTIVE_ITEM', 'CHANG_ACTIVE_ITEM'])},
     setup(props, context) {
+
+        const store = useStore()
+
+        const navBars = store.getters.navBars
+        const activeItem = (item) => store.commit('ACTIVE_ITEM', item)
+        const changeActiveItem = (urlPathname) => store.commit('CHANG_ACTIVE_ITEM', urlPathname)
+
         const menuApp = reactive({
             'icon' : '',
             'name' : 'App Vue',
@@ -68,11 +75,23 @@ export default {
             (menuApp.hover) ? (menuApp.show = false) : ''
         }
 
+        const getActivePage = () => {
+            let urlPathname = window.location.pathname
+            // return urlPathname.includes(url)
+        }
+
+        onMounted(() => {
+            changeActiveItem(window.location.pathname)
+        })
+
         return {
             menuApp,
             asideHover,
             asideMouseOver,
             asideMouseLeave,
+            navBars,
+            activeItem,
+            changeActiveItem,
         }
     }
 }

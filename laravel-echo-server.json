@@ -1,5 +1,5 @@
 {
-	"authHost": "http://laravel-vue.com",
+	"authHost": "http://laravel-vue.local.com",
 	"authEndpoint": "/broadcasting/auth",
 	"clients": [],
 	"database": "redis",

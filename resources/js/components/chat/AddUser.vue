@@ -14,21 +14,24 @@
         </div>
         <div class="modal-body">
           <div>
-            <form @submit.prevent="addUserToChat" class="">
-                <!-- <div class="mb-3">
-                    <label for="inputName" class="form-label">Email</label>
-                    <input type="text" class="form-control" id="inputName" v-model="form.user_email">
-                </div> -->
-                <!-- <div class="mb-3">
-                    <label for="inputName" class="form-label">Email</label>
-                    <select class="form-control" name="" id="" v-model="form.user_email">
-                      <option value="" selected disabled>-- Chọn --</option>
-                      <option v-for="user in users" :key="user.id" :value="user.id">{{ user.email }}</option>
-                    </select>
-                </div> -->
+            <!-- <form @submit.prevent="addUserToChat" class="">
                 <div class="mb-3">
                   <label for="inputName" class="form-label">Email</label>
                   <Select2 id="tetsSelect" class="js-select2" :options="users" :settings="{ width: '100%', dropdownParent: '#addUserModal' }" v-model="form.user_id"/>
+                </div>
+            </form> -->
+
+            <form @submit.prevent="addUserToChat" class="">
+                <div class="mb-3">
+                  <label for="inputName" class="form-label">Email</label>
+                  <el-select v-model="form.user_id" filterable placeholder="Select" class="w-100">
+                    <el-option class=""
+                        v-for="item in props.users"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value"
+                    />
+                  </el-select>
                 </div>
             </form>
           </div>
@@ -45,36 +48,32 @@
 </template>
 
 <script>
-import {onMounted, ref} from "vue"
+import {onMounted, reactive, ref, watch} from "vue"
 import alertCommon from "../../common/alert"
-import Select2 from 'vue3-select2-component';
+// import Select2 from 'vue3-select2-component';
 import useChat from "./../../composables/Model/chat"
 
 export default {
-    components: {
-        Select2
-    },
-    props: ['addUser', 'chatId'],
+    props: ['addUser', 'chatId', 'users'],
     setup (props) {
-      let form = ref({
+      let form = reactive({
         'chat_id': '',
         'user_id': '',
-        // 'user_email': '',
       })
 
       const addUser = props.addUser
-      // const users = props.users
+      const chatId = props.chatId
+      let users = props.users
 
       const { loadingModal } = alertCommon()
-      const { users, getUsers } = useChat()
+    //   const { users, getUsers } = useChat()
 
       const addUserToChat = () => {
         loadingModal()
 
         let data = {
-            'chat_id': props.chatId,
-            'user_id': form.value.user_id,
-            // 'user_email': form.value.user_email,
+          'chat_id': props.chatId,
+          'user_id': form.user_id,
         }        
         addUser(data)
       }
@@ -87,9 +86,15 @@ export default {
         console.log('mySelectEvent', {id, text})
       }
 
-      onMounted(() => {
-        getUsers()
-      })
+    //   watch(props.chatId, (newVal, oldVal) => {
+    //     // scrollToBottom()
+    //     console.log("DH newVal", newVal)
+    //     getUsers(chatId)
+    //   }, { deep: true })
+
+    //   onMounted(() => {
+    //     getUsers(chatId)
+    //   })
 
       return {
         form,
@@ -98,6 +103,7 @@ export default {
         mySelectEvent,
         selectedVal: '',
         users,  
+        props,
       }
     }
 }

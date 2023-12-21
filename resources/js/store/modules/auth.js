@@ -22,7 +22,7 @@ const state = {
         // email: null,
     },
     app: {
-        baseUrl: 'http://laravel-vue.com'
+        baseUrl: 'http://laravel-vue.local.com'
     },
 }
 
