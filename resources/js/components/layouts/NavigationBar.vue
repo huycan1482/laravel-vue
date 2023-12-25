@@ -1,6 +1,6 @@
 <template>
     <div class="d-flex justify-content-center align-items-center flex-wrap">
-        <div class="d-flex flex-wrap page-paginator">
+        <div class="d-flex flex-wrap page-paginator" v-if="(lastPage > 1)">
             <a href="javascript:void(0)" class="page-item" v-for="page in pages" 
             :key="page" 
             :class="[(page.active) ? 'active' : '', (page.disabled) ? 'disabled' : '']"

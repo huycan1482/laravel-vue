@@ -28,7 +28,6 @@ export default () => {
             confirmButtonText: 'Close'
         }).then((result) => {
             if(result['isConfirmed']) {
-                console.log("DH")
             }
         })
     }

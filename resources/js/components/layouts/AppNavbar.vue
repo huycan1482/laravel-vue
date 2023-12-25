@@ -126,8 +126,6 @@ export default {
             getParamsUrl(conditions)
         })
 
-        console.log("DH conditions", conditions)
-
         return {
             navBars,
             conditions
