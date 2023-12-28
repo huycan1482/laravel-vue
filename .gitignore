@@ -14,3 +14,5 @@ yarn-error.log
 
 /public/css
 /public/js
+
+/node_server/node_modules
