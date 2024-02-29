@@ -22,11 +22,15 @@ export default {
         console.log("DH socket", socket);
         socket.on('connect', () => {
             console.log('socket connected: ' + socket.id);
-            // socket.emit('join', messageImportStatusRoom);
+            // socket.emit('join', 'room-1');
         });
 
          socket.on("error", (error) => {
             console.log('socket error', error);
+        })
+
+        socket.on("room-1", (data) => {
+            console.log("Msg", data)
         })
 
 
